@@ -1,9 +1,9 @@
-package com.zyc.learn_demo.concurrent;
+package com.zyc.learn_demo.thread;
 
 import java.util.concurrent.*;
 
 /**
- * 多次调用失败的Future的get方法
+ * 多次调用失败的Future的get方法，结果：多次失败
  *
  * @author zhuyc
  * @date 2021/06/18 23:51

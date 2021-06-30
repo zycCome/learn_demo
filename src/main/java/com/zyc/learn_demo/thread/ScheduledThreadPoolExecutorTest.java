@@ -1,4 +1,4 @@
-package com.zyc.learn_demo.concurrent;
+package com.zyc.learn_demo.thread;
 
 import org.junit.jupiter.api.Test;
 

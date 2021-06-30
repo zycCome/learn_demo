@@ -1,4 +1,4 @@
-package com.zyc.learn_demo.concurrent;
+package com.zyc.learn_demo.thread;
 
 import org.junit.jupiter.api.Test;
 import sun.misc.Unsafe;
@@ -25,7 +25,7 @@ public class ThreadPoolTest {
     }
 
     /**
-     * Execute时检查检查工作线程数量时线程不安全的
+     * Execute时检查工作线程数量是线程不安全的
      */
     @Test
     public void testExecuteSafe() {
@@ -73,7 +73,7 @@ public class ThreadPoolTest {
         //顺序如下：
         //第一个线程执行结束
         //第二个线程入队并执行结束,但还没有执行下面的检查
-        //线程池关系
+        //线程池关闭
         //第二个线程执行下面的检查
         executor.shutdown();
 
@@ -104,6 +104,19 @@ public class ThreadPoolTest {
         System.out.println("main1");
         System.out.println("main2");
 
+    }
+
+    /**
+     *
+     * isShutdown和isTerminated的区别？
+     */
+    @Test
+    public void testIsShutdownAndIsTerminated() {
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 2, 2, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), Executors.defaultThreadFactory()
+                , new ThreadPoolExecutor.AbortPolicy());
+
+        System.out.println(executor.isShutdown());
+        System.out.println(executor.isTerminated());
     }
 
 }
