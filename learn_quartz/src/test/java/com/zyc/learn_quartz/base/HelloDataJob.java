@@ -32,7 +32,7 @@ public class HelloDataJob implements Job {
 
 
         /*
-         * JobDetail和Trigger都可以设置obDataMap
+         * JobDetail和Trigger都可以设置jobDataMap
          */
         System.out.println(jobDetail.getJobDataMap().get("hehe"));
         System.out.println(trigger.getJobDataMap().get("hehe"));

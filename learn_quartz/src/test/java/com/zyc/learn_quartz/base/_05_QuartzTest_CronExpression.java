@@ -23,8 +23,6 @@ public class _05_QuartzTest_CronExpression {
                     .build();
 
 
-
-
             // 0 1 2 3
             // 测试cron表达式
             Trigger trigger = TriggerBuilder.newTrigger()

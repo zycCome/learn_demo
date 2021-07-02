@@ -27,7 +27,7 @@ public class _06_QuartzTest_Data {
 
             // 0 1 2 3
             /*
-             * JobDetail和Trigger都可以设置obDataMap
+             * JobDetail和Trigger都可以设置jobDataMap
              * 并且在Job初始化时，两者会合并（trigger中的优先级别高）。
              * 然后将合并后的值，通过key判断job中是否存在对应的set方法，有则赋值（自动注入）
              */

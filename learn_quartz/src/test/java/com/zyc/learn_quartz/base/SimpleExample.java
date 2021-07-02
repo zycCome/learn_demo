@@ -29,8 +29,8 @@ public class SimpleExample {
 //        Trigger trigger = newTrigger().withIdentity("trigger1", "group1").startAt(runTime).build();
         Trigger trigger = newTrigger().withIdentity("trigger1", "group1").startNow()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                .withIntervalInSeconds(5)
-                .repeatForever())
+                        .withIntervalInSeconds(5)
+                        .repeatForever())
                 .build();
 
         sched.scheduleJob(job, trigger);

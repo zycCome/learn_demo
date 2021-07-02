@@ -37,6 +37,7 @@ public class _09_QuartzTest_ScheduleTrigger {
                     )
                     .build();
 
+            //必须要把jobDetail加入到scheduler中
             scheduler.addJob(job,false);
             //上面指定了job，这里可以不用指定job了
             scheduler.scheduleJob(trigger);
