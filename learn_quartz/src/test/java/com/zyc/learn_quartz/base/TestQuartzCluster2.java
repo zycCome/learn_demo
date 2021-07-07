@@ -1,29 +1,28 @@
 package com.zyc.learn_quartz.base;
 
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
-
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
+import static org.quartz.JobBuilder.newJob;
+
 /**
- * 集群测试1
+ * 集群测试1.测试集群之间的更新会不会有问题。
+ * 比如A实例卡了很久，B实例更新后，状态变为wait->acuqire,A恢复执行了，B又没了
  *
  * @author zhuyc
  * @date 2021/07/05 22:51
  **/
-public class TestQuartzCluster {
+public class TestQuartzCluster2 {
 
     public static boolean flag = false;
 
     public static void main(String[] args) throws Exception {
+        flag = true;
         try {
-            flag = true;
             assginNewJob();
         } catch (ObjectAlreadyExistsException e) {
-            System.err.println("发现任务已经在数据库存在了，直接从数据库里运行:"+ e.getMessage());
+            System.err.println("发现任务已经在数据库存在了，直接从数据库里运行:" + e.getMessage());
             // TODO Auto-generated catch block
             resumeJobFromDatabase();
         }
@@ -31,8 +30,18 @@ public class TestQuartzCluster {
 
     private static void resumeJobFromDatabase() throws Exception {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-        System.out.println("当前调度器的id是："+scheduler.getSchedulerInstanceId());
+        System.out.println("当前调度器的id是：" + scheduler.getSchedulerInstanceId());
         scheduler.start();
+
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity("trigger1", "group1")
+                .startNow()
+                .withSchedule(
+                        CronScheduleBuilder.cronSchedule("40 * * * * ? *")
+                )
+                .build();
+        TriggerKey triggerKey = TriggerKey.triggerKey("trigger1", "group1");
+        scheduler.rescheduleJob(triggerKey, trigger);
         // 等待200秒，让前面的任务都执行完了之后，再关闭调度器
         Thread.sleep(2000000);
         scheduler.shutdown(true);
@@ -64,7 +73,7 @@ public class TestQuartzCluster {
 
         // 调度加入这个job
         scheduler.scheduleJob(job, trigger);
-        System.out.println("当前调度器的id是："+scheduler.getSchedulerInstanceId());
+        System.out.println("当前调度器的id是：" + scheduler.getSchedulerInstanceId());
 
         // 启动
         scheduler.start();
