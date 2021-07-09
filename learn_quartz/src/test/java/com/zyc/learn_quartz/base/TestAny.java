@@ -18,8 +18,9 @@ public class TestAny {
          * 通过，不一定正确
          * 不通过，一定不正确
          */
-        CronExpression.validateExpression("0 0 0 L-3 * ? 2020");
-        CronExpression.validateExpression("0 0 0 1-3 * ? 2020");
+//        CronExpression.validateExpression("0 0 0 L-3 * ? 2020");
+//        CronExpression.validateExpression("0 0 0 1-3 * ? 2020");
+        CronExpression.validateExpression("0 0 10am 1,15 * ?");
     }
 
 
