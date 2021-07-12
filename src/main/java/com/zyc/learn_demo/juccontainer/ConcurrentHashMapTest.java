@@ -81,4 +81,21 @@ public class ConcurrentHashMapTest {
         map1.put("7", "a");
     }
 
+
+    /**
+     * 测试帮助扩容失败怎么办？不帮了，不阻塞，直接往下走。反正已经拿到了最新的table（虽然可能还在迁移中），但不影响put的正常使用
+     * @param args
+     */
+    public static void main(String[] args) {
+        ConcurrentHashMap<String,String> m1 = new ConcurrentHashMap(16);
+        new Thread(() -> {
+            m1.put("key25","a");
+            System.out.println(111);
+        }).start();
+        for (int i = 0; i < 32; i++) {
+            m1.put("key"+i,"xc");
+        }
+
+    }
+
 }
