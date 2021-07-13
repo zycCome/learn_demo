@@ -38,7 +38,7 @@ public class HelloDataJob implements Job {
         System.out.println(trigger.getJobDataMap().get("hehe"));
 
 //        System.out.println(context.getMergedJobDataMap().get("hehe"));
-//
+
 //
 //        System.out.println(helloSpringService);
 
