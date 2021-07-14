@@ -33,7 +33,7 @@ public class SimpleExample {
                         .repeatForever())
                 .build();
 
-        sched.scheduleJob(job, trigger);
+//        sched.scheduleJob(job, trigger);
         System.out.println(job.getKey() + " will run at: " + runTime);
 
         sched.start();
