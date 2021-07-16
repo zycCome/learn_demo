@@ -1,0 +1,13 @@
+server:
+  port: 6011
+spring:
+  application:
+    name: course-service
+  cloud:
+    nacos:
+      discovery:
+        #必须配置ip地址
+        server-addr: zhuyc.top:18848
+        # 将自己的服务注册到注册中心
+        register-enabled: true
+        #namespace: all-register-service-namespace
