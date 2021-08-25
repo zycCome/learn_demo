@@ -59,6 +59,7 @@ public class JOLTest {
             out.println("locking");
             out.println(ClassLayout.parseInstance(a).toPrintable());
         }
+        out.println(ClassLayout.parseInstance(a).toPrintable());
     }
 
     @Test
@@ -78,6 +79,69 @@ public class JOLTest {
         }
         out.println("after lock");
         out.println(ClassLayout.parseInstance(a).toPrintable());
+    }
+
+    /**
+     * 目的：测试锁是否会降级。轻量级锁降到偏向锁状态
+     * 结论：偏向锁升级之后，无锁状态不会再变回偏向锁（排除偏向锁撤销、重偏向）
+     */
+    @org.junit.Test
+    public void  testLockDemotion() throws InterruptedException {
+
+        try {
+            Thread.sleep(6000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Object lightObject = new Object();
+        Object biasedLockObject = new Object();
+        System.out.println("---------------------------------------加锁前---------------------------------------");
+        System.out.println("偏向锁：" + ClassLayout.parseInstance(biasedLockObject).toPrintable() + "\n轻量级锁：" + ClassLayout.parseInstance(lightObject).toPrintable());
+        System.out.println("---------------------------------------加锁后---------------------------------------");
+
+        synchronized (lightObject) {
+            System.out.println("轻量级锁第一次：" + ClassLayout.parseInstance(lightObject).toPrintable());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+        }
+//        System.out.println("---------------------------------------释放锁---------------------------------------");
+//        System.out.println("偏向锁：" + ClassLayout.parseInstance(biasedLockObject).toPrintable() + "\n轻量级锁：" + ClassLayout.parseInstance(lightObject).toPrintable());
+
+        for (int i=0;i<10;i++) {
+            Thread thread = new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+//                    synchronized (biasedLockObject) {
+//                        System.out.println("竞争偏向锁：" + ClassLayout.parseInstance(biasedLockObject).toPrintable());
+//                    }
+//
+//                    System.out.println("竞争偏向锁释放：" + ClassLayout.parseInstance(biasedLockObject).toPrintable());
+                    synchronized (lightObject) {
+                        System.out.println("竞争轻量级锁：" + ClassLayout.parseInstance(lightObject).toPrintable());
+                    }
+
+//              System.out.println("竞争偏向锁释放：" + ClassLayout.parseInstance(biasedLockObject).toPrintable());
+                }
+
+            });
+            thread.start();
+        }
+
+        Thread.sleep(5000);
+        System.out.println("轻量级锁释放后：" + ClassLayout.parseInstance(lightObject).toPrintable());
+
+
+        synchronized (lightObject) {
+            System.out.println("轻量级锁最后一次：" + ClassLayout.parseInstance(lightObject).toPrintable());
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+        }
+
     }
 
 }
