@@ -6,6 +6,7 @@
     <modules>
         <module>learn_quartz</module>
         <module>learn_nacos</module>
+        <module>learn_seata</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

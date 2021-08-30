@@ -23,6 +23,8 @@ public class JOLTest {
 
     }
 
+
+
     static class A extends Parent{
         //要看一看，写这个boolean和不写这个boolean 输出的对象头信息有什么区别，下面的两坨黑乎乎的就是输出
         boolean flag = false;
@@ -141,6 +143,20 @@ public class JOLTest {
             } catch (InterruptedException e) {
             }
         }
+
+    }
+
+
+    @Test
+    public void testString() {
+        String a = "";
+        String b = "a";
+        String c = "acasdasdasdasdasdasdas";
+        char[] d = {'a','c','a','d','e'};
+        out.println(ClassLayout.parseInstance(a).toPrintable());
+        out.println(ClassLayout.parseInstance(b).toPrintable());
+        out.println(ClassLayout.parseInstance(c).toPrintable());
+        out.println(ClassLayout.parseInstance(d).toPrintable());
 
     }
 
