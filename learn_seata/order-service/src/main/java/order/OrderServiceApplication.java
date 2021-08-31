@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 
 @RestController
 @SpringBootApplication
-@MapperScan("com.it235.seata.order.mapper")
+@MapperScan("order.mapper")
 @EnableDiscoveryClient
 @EnableFeignClients
 public class OrderServiceApplication {

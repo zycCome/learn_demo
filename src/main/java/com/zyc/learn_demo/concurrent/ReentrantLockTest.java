@@ -55,7 +55,7 @@ public class ReentrantLockTest {
 
 
         new Thread(r).start();
-        new Thread(r).start();
+        new Thread(r2).start();
         new Thread(r2).start();
         new Thread(r).start();
 

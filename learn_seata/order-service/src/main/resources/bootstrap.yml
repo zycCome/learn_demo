@@ -7,18 +7,18 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: seata_test
     password: 'seata1234abcd!'
-    url: jdbc:mysql://rm-bp17dq6iz79761b8fxo.mysql.rds.aliyuncs.com:3306/it235_order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+    url: jdbc:mysql://zhuyc.top:13306/order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
   cloud:
     nacos:
       discovery:
-        server-addr: nacos.it235.com:80
+        server-addr: zhuyc.top:18848
         register-enabled: true
-        namespace: cab17056-9954-4e45-9223-eb33692f60f7
+        namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
       config:
-        server-addr: nacos.it235.com:80
+        server-addr: zhuyc.top:18848
         enabled: true
         file-extension: yaml
-        namespace: cab17056-9954-4e45-9223-eb33692f60f7
+        namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
 
 seata:
   enabled: true
@@ -29,8 +29,8 @@ seata:
     type: nacos
     # 需要和server在同一个注册中心下
     nacos:
-      namespace: cab17056-9954-4e45-9223-eb33692f60f7
-      serverAddr: nacos.it235.com:80
+      namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
+      serverAddr: zhuyc.top:18848
       # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
       group: SEATA_GROUP
       username: "nacos"
@@ -40,9 +40,9 @@ seata:
     nacos:
       # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
       application: seata-server
-      server-addr: nacos.it235.com:80
+      server-addr: zhuyc.top:18848
       group: SEATA_GROUP
-      namespace: cab17056-9954-4e45-9223-eb33692f60f7
+      namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
       username: "nacos"
       password: "nacos"
 
