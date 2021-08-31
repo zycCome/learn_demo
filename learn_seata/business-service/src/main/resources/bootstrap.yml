@@ -1,26 +1,22 @@
+
 server:
-  port: 6770
+  port: 6760
 spring:
   profiles:
     active: local
   application:
-    name: order-service
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: seata_test
-    password: 'seata1234abcd!'
-    url: jdbc:mysql://test:13306/order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
+    name: business-service
   cloud:
     nacos:
       discovery:
-        server-addr: test:8848
+        server-addr: nacos.it235.com:80
         register-enabled: true
-        namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
+        namespace: cab17056-9954-4e45-9223-eb33692f60f7
       config:
-        server-addr: test:8848
+        server-addr: nacos.it235.com:80
         enabled: true
         file-extension: yaml
-        namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
+        namespace: cab17056-9954-4e45-9223-eb33692f60f7
 
 seata:
   enabled: true
@@ -31,8 +27,8 @@ seata:
     type: nacos
     # 需要和server在同一个注册中心下
     nacos:
-      namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
-      serverAddr: test:8848
+      namespace: cab17056-9954-4e45-9223-eb33692f60f7
+      serverAddr: nacos.it235.com:80
       # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
       group: SEATA_GROUP
       username: "nacos"
@@ -42,11 +38,19 @@ seata:
     nacos:
       # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
       application: seata-server
-      server-addr: test:8848
+      server-addr: nacos.it235.com:80
       group: SEATA_GROUP
-      namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
+      namespace: cab17056-9954-4e45-9223-eb33692f60f7
       username: "nacos"
       password: "nacos"
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
+
+# feign组件超时设置
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 30000
+        read-timeout: 30000
