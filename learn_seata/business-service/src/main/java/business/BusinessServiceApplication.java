@@ -4,6 +4,7 @@ package business;
 import business.client.OrderClient;
 import business.client.StorageClient;
 import io.seata.spring.annotation.GlobalTransactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ import java.util.Collection;
 @RestController
 @EnableFeignClients
 @EnableDiscoveryClient
+@Slf4j
 public class BusinessServiceApplication {
 
     @Autowired
@@ -26,14 +28,15 @@ public class BusinessServiceApplication {
     @Autowired
     private StorageClient storageClient;
 
-    @Autowired
-    private Collection<RestTemplate> restTemplates;
-
     @GetMapping("buy")
     @GlobalTransactional
     public String buy(long userId , long productId){
         orderClient.create(userId , productId);
-        storageClient.changeStorage(userId , 1);
+        try {
+            storageClient.changeStorage(userId , 1);
+        } catch (Exception e) {
+            log.error("库存操作失败！");
+        }
         return "ok";
     }
 

@@ -35,3 +35,4 @@ build/
 /.mvn/
 
 bootstrap-local.yml
+application-local.yml

@@ -24,9 +24,6 @@ public class StorageServiceImpl implements StorageService {
     public boolean updateUseNum(long productId , long used) {
 //        int a = 100/0;
         int index = storageMapper.updateUsed(productId, used);
-        if(1==1) {
-            throw new RuntimeException("ces");
-        }
         return index > 0;
     }
 }

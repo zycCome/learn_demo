@@ -8,6 +8,7 @@
         <module>learn_nacos</module>
         <module>learn-jdk</module>
         <module>learn_seata</module>
+        <module>learn-spring</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
