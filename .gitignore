@@ -33,6 +33,8 @@ build/
 .vscode/
 
 /.mvn/
+mvnw
+mvnw.cmd
 
 bootstrap-local.yml
 application-local.yml
