@@ -1,11 +1,14 @@
 package com.zyc;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 用户类
  *
  * @author zhuyc
  * @date 2021/09/02 08:04
  **/
+@Component
 public class User {
 
     private String name;
@@ -34,5 +37,9 @@ public class User {
                 "name='" + name + '\'' +
                 ", age='" + age + '\'' +
                 '}';
+    }
+
+    public User() {
+        System.out.println("user");
     }
 }

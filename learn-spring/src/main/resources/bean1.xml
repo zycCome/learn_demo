@@ -7,4 +7,16 @@
         <property name="age" value="18"/>
         <property name="name" value="zhuyc"/>
     </bean>
+
+<!--    <alias name="user" alias="user-alias"/>-->
+
+
+
+<!--    <bean name="user2" class="com.zyc.User" >-->
+<!--        <property name="age" value="28"/>-->
+<!--        <property name="name" value="zhuyc2"/>-->
+<!--    </bean>-->
+
+<!--    <bean name="userFactory" class="com.zyc.UserFactoryBean" >-->
+<!--    </bean>-->
 </beans>
