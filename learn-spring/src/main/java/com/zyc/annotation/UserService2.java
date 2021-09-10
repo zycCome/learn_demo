@@ -3,6 +3,7 @@ package com.zyc.annotation;
 import com.zyc.User;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,6 +16,13 @@ public class UserService2 {
     @Autowired
     private User user;
 
+    @Value("${name:12312}")
+    private String name;
+
+
+    public UserService2() {
+        System.out.println("userService construct");
+    }
     @Autowired
     private BeanFactory beanFactory;
 

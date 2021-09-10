@@ -12,10 +12,6 @@ public class UserService {
     @Autowired
     private User user;
 
-    public UserService(User user,User user2){
-        System.out.println("userService construct");
-    }
-
     public UserService() {
         System.out.println("userService no args construct");
     }
