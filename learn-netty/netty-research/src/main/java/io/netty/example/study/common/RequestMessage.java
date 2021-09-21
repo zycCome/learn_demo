@@ -2,6 +2,9 @@ package io.netty.example.study.common;
 
 /**
  * 请求消息
+ *
+ * 这里的Message的泛型是声明为Operation（RequestBody的子类）
+ * ，因此所有RequestMessage产生的RequestBody都可以执行Operation的execute方法！
  */
 public class RequestMessage extends Message<Operation>{
 
