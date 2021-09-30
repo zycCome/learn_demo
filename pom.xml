@@ -9,9 +9,7 @@
         <module>learn-jdk</module>
         <module>learn_seata</module>
         <module>learn-spring</module>
-        <module>netty-learn</module>
         <module>learn-netty</module>
-        <module>netty-research</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
