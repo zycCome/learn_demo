@@ -37,8 +37,10 @@ public class Server {
         serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
         MetricHandler metricHandler = new MetricHandler();
 
-        //非主从Reactor多线程模式
-        serverBootstrap.group(new NioEventLoopGroup(0, new DefaultThreadFactory("boss-and-worker")));
+//        //非主从Reactor多线程模式
+//        serverBootstrap.group(new NioEventLoopGroup(0, new DefaultThreadFactory("boss-and-worker")));
+        serverBootstrap.group(new NioEventLoopGroup(2, new DefaultThreadFactory("boss")),
+                new NioEventLoopGroup(0, new DefaultThreadFactory("worker")));
         serverBootstrap.childHandler(new ChannelInitializer<NioSocketChannel>() {
             @Override
             protected void initChannel(NioSocketChannel ch) throws Exception {
@@ -49,7 +51,7 @@ public class Server {
                 pipeline.addLast(new OrderFrameEncoder());
                 pipeline.addLast(new OrderProtocolDecoder());
                 pipeline.addLast(new OrderProtocolEncoder());
-                pipeline.addLast("metricHandler", metricHandler);
+//                pipeline.addLast("metricHandler", metricHandler);
                 //添加日志输出
                 pipeline.addLast(new LoggingHandler(LogLevel.INFO));
                 pipeline.addLast(new OrderServerProcessHandler());

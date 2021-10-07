@@ -36,4 +36,10 @@ public class OrderServerProcessHandler extends SimpleChannelInboundHandler<Reque
         System.out.println("OrderServerProcessHandler channelReadComplete");
         super.channelReadComplete(ctx);
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channelInactive");
+        super.channelInactive(ctx);
+    }
 }

@@ -14,7 +14,7 @@ public class OrderFrameDecoder extends LengthFieldBasedFrameDecoder {
     public OrderFrameDecoder() {
         /**
          * 参数分别表示
-         * 1. 帐最大的长度。如果帧的长度大于这个值，将抛出 {@link TooLongFrameException}。
+         * 1. 帧最大的长度。如果帧的长度大于这个值，将抛出 {@link TooLongFrameException}。
          * 2. 长度字段的偏移量
          * 3. 长度字段的长度
          * 4. 要添加到长度字段值的补偿值

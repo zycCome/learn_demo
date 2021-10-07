@@ -22,22 +22,22 @@ public class MetricHandler extends ChannelDuplexHandler {
 
     private AtomicLong totalConnectionNumber = new AtomicLong();
 
-    {
-        MetricRegistry metricRegistry = new MetricRegistry();
-        metricRegistry.register("totalConnectionNumber", new Gauge<Long>() {
-            @Override
-            public Long getValue() {
-                return totalConnectionNumber.get();
-            }
-        });
-
-        ConsoleReporter consoleReporter = ConsoleReporter.forRegistry(metricRegistry).build();
-        consoleReporter.start(5, TimeUnit.SECONDS);
-
-        JmxReporter jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
-        jmxReporter.start();
-
-    }
+//    {
+//        MetricRegistry metricRegistry = new MetricRegistry();
+//        metricRegistry.register("totalConnectionNumber", new Gauge<Long>() {
+//            @Override
+//            public Long getValue() {
+//                return totalConnectionNumber.get();
+//            }
+//        });
+//
+//        ConsoleReporter consoleReporter = ConsoleReporter.forRegistry(metricRegistry).build();
+//        consoleReporter.start(5, TimeUnit.SECONDS);
+//
+//        JmxReporter jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
+//        jmxReporter.start();
+//
+//    }
 
 
     @Override
