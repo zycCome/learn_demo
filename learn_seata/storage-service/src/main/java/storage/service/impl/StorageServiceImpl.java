@@ -21,8 +21,11 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     @Transactional
-    public boolean updateUseNum(long productId , long used) {
+    public boolean updateUseNum(long productId, long used) {
 //        int a = 100/0;
+        if (used > 100) {
+            throw new RuntimeException("used to much : " + used);
+        }
         int index = storageMapper.updateUsed(productId, used);
         return index > 0;
     }

@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,12 +31,13 @@ public class BusinessServiceApplication {
 
     @GetMapping("buy")
     @GlobalTransactional
-    public String buy(long userId , long productId){
+    public String buy(long userId , long productId,@RequestParam(defaultValue = "101") int used){
         orderClient.create(userId , productId);
         try {
-            storageClient.changeStorage(userId , 1);
+            storageClient.changeStorage(productId , used);
         } catch (Exception e) {
             log.error("库存操作失败！");
+            throw e;
         }
         return "ok";
     }
