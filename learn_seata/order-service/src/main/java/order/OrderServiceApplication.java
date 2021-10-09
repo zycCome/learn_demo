@@ -1,8 +1,11 @@
 package order;
 
 
+import order.mapper.OrderMapper2;
 import order.model.Order;
+import order.model.Order2;
 import order.service.OrderService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,6 +27,9 @@ public class OrderServiceApplication {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private OrderMapper2 orderMapper2;
+
     @GetMapping("order/create")
     public Boolean create(long userId , long productId){
         Order order = new Order();
@@ -32,6 +38,13 @@ public class OrderServiceApplication {
             .setProductId(productId)
             .setUserId(userId)
             .setStatus(0);
+
+        //测试传xid，是否依赖本地事务注解（ @Transactional）
+        Order2 order2 = new Order2();
+        BeanUtils.copyProperties(order,order2);
+        order2.setUserId(order2.getUserId() + 20000);
+        orderMapper2.insert(order2);
+
         return orderService.create(order);
     }
 

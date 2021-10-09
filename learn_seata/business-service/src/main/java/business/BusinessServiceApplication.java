@@ -32,7 +32,12 @@ public class BusinessServiceApplication {
     @GetMapping("buy")
     @GlobalTransactional
     public String buy(long userId , long productId,@RequestParam(defaultValue = "101") int used){
-        orderClient.create(userId , productId);
+        try {
+            orderClient.create(userId , productId);
+        } catch (Exception e) {
+            log.error("订单操作失败！");
+            throw e;
+        }
         try {
             storageClient.changeStorage(productId , used);
         } catch (Exception e) {
