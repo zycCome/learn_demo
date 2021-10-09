@@ -1,25 +1,23 @@
 package order.model;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
 import java.math.BigDecimal;
 
 /**
  * @author jianjun.ren
  * @since 2021/02/16
  */
-@Table(name = "tab_order")
+@TableName(value = "tab_order")
 @Data
 @Accessors(chain = true)
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @TableId
     private Long id;
 
     private Long userId;

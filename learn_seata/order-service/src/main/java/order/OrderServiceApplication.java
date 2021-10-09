@@ -5,6 +5,7 @@ import order.mapper.OrderMapper2;
 import order.model.Order;
 import order.model.Order2;
 import order.service.OrderService;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -13,15 +14,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tk.mybatis.spring.annotation.MapperScan;
 
 import java.math.BigDecimal;
 
 @RestController
 @SpringBootApplication
-@MapperScan("order.mapper")
 @EnableDiscoveryClient
 @EnableFeignClients
+@MapperScan("order.mapper")
 public class OrderServiceApplication {
 
     @Autowired

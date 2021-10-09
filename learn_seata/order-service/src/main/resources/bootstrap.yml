@@ -47,9 +47,15 @@ seata:
       namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
       username: "nacos"
       password: "nacos"
+  enable-auto-data-source-proxy: false
+
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
 logging:
   level:
     order.mapper: debug
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: INPUT
