@@ -1,0 +1,52 @@
+# 数据库访问配置
+# 主数据源，默认的
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/druid
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 下面为连接池的补充设置，应用到上面所有数据源中
+    # 初始化大小，最小，最大
+    initialSize: 5
+    maxActive: 20
+    minIdle: 5
+    maxWait: 1000
+    #测试获取超时
+#    initialSize: 0
+#    maxActive: 1
+#    minIdle: 0
+#    maxWait: 60000
+    filters: stat,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    minEvictableIdleTimeMillis: 300000
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    poolPreparedStatements: true
+    testOnBorrow: false
+    testOnReturn: false
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    validationQuery: SELECT 1 FROM DUAL
+    type: com.alibaba.druid.pool.DruidDataSource
+  jackson:
+    serialization:
+      indent_output: true
+  #JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  profiles:
+    active: local
+springdatasource:
+  type: com.alibaba.druid.pool.DruidDataSource
+logging:
+  level:
+    druid:
+      sql:
+        Statement: debug
+#      sql: debug
+druid:
+  filter:
+    slf4j:
+      statement-executable-sql-log-enable: true

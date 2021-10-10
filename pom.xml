@@ -10,6 +10,7 @@
         <module>learn_seata</module>
         <module>learn-spring</module>
         <module>learn-netty</module>
+        <module>learn-druid</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
