@@ -11,6 +11,7 @@
         <module>learn-spring</module>
         <module>learn-netty</module>
         <module>learn-druid</module>
+        <module>learn-demos</module>
         <module>design-pattern</module>
     </modules>
     <parent>

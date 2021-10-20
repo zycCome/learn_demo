@@ -1,0 +1,5 @@
+# 现象：远程配置优先本地
+custom:
+  headers:
+    - "token:1312"
+    - "asdasdas"
