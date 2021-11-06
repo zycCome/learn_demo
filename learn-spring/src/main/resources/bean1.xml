@@ -12,11 +12,12 @@
 
 
 
-<!--    <bean name="user2" class="com.zyc.User" >-->
-<!--        <property name="age" value="28"/>-->
-<!--        <property name="name" value="zhuyc2"/>-->
-<!--    </bean>-->
+    <bean name="user2" class="com.zyc.User" >
+        <property name="age" value="28"/>
+        <property name="name" value="zhuyc2"/>
+    </bean>
 
-<!--    <bean name="userFactory" class="com.zyc.UserFactoryBean" >-->
-<!--    </bean>-->
+    <!--返回的是User，不是UserFactor-->
+    <bean name="userFactory" class="com.zyc.UserFactoryBean" >
+    </bean>
 </beans>

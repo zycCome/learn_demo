@@ -26,6 +26,11 @@ public class MyConfigOfAOP {
         return new Demo();
     }
 
+    @Bean
+    public BeanC beanC(){
+        return new BeanC();
+    }
+
     /**
      * 切面类加入容器
      * @return
@@ -33,5 +38,16 @@ public class MyConfigOfAOP {
     @Bean
     public DemoAspect demoAspect(){
         return new DemoAspect();
+    }
+
+    /**
+     * 测试BeanB类型重复，@Autowired注解是否会按名称搜索
+     * @return
+     */
+    @Bean("repeatedBeanB")
+    public  BeanB repeatedBeanB() {
+        BeanB beanB = new BeanB();
+        beanB.type = 2;
+        return beanB;
     }
 }

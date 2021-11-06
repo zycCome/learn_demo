@@ -9,9 +9,12 @@ import org.springframework.beans.factory.FactoryBean;
  * @date 2021/09/03 22:30
  **/
 public class UserFactoryBean implements FactoryBean<User> {
+    User user = new User();
+
     @Override
     public User getObject() throws Exception {
-        return new User();
+//        return new User();
+        return user;
     }
 
     public UserFactoryBean() {
@@ -21,5 +24,10 @@ public class UserFactoryBean implements FactoryBean<User> {
     @Override
     public Class<?> getObjectType() {
         return User.class;
+    }
+
+    @Override
+    public boolean isSingleton() {
+        return false;
     }
 }

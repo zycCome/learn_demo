@@ -2,21 +2,17 @@ package com.zyc.aop;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
  * @author zhuyc
  * @date 2021/09/05 17:47
  **/
-@Component
 @Data
-public class BeanB {
+public class BeanC {
 
-    public int type = 1;
+    public int type = 3;
 
-    @Autowired
-    private BeanA beanA;
 
     /**
      * 测试循环依赖

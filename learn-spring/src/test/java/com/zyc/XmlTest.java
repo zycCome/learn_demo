@@ -15,8 +15,10 @@ public class XmlTest {
     public void test1() {
         ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/bean1.xml");
         System.out.println("容器启动完成");
-//        User user = (User)applicationContext.getBean("user-alias");
-        User user = applicationContext.getBean(User.class);
+        User user = (User)applicationContext.getBean("userFactory");
+        User user2 = (User)applicationContext.getBean("userFactory");
+        System.out.println(user == user2);
+//        User user = applicationContext.getBean(User.class);
         applicationContext.getBean(UserFactoryBean.class);
         System.out.println("end");
     }

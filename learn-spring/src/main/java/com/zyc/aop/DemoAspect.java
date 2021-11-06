@@ -15,8 +15,8 @@ public class DemoAspect {
     /**
      * 抽取公共的切点，本类以及其他切面类都可以使用
      */
-//    @Pointcut("execution(public void com.zyc.aop.Demo.printHello(..))")
-    @Pointcut("execution(public void com.zyc.aop.BeanA.test1())")
+    @Pointcut("execution(public void com.zyc.aop.Demo.printHello(..))")
+//    @Pointcut("execution(public void com.zyc.aop.BeanA.test1())")
     public void cut() {
     }
 
