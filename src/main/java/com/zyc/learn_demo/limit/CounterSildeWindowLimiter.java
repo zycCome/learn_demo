@@ -59,6 +59,10 @@ public class CounterSildeWindowLimiter {
         }
     }
 
+    /**
+     * 滑动窗口
+     * @param windowsNum
+     */
     private synchronized void slideWindow(long windowsNum){
         if(windowsNum < splitNum)
             return;
@@ -69,6 +73,7 @@ public class CounterSildeWindowLimiter {
         for(int i = 0;i < slideNum;i ++){
             //先将第一个窗口重置
             counters[index] = 0;
+            //index 对应 startTime对应的那个区间的起止时间
             index = (index + 1) % splitNum;
         }
         startTime = startTime + needSlide * (splitTimeSize);//更新滑动窗口时间

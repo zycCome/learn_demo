@@ -13,6 +13,7 @@
     <artifactId>learn-demos</artifactId>
     <modules>
         <module>little-route</module>
+        <module>url-match</module>
     </modules>
 
 

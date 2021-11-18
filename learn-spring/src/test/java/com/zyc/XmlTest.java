@@ -1,7 +1,10 @@
 package com.zyc;
 
 import org.junit.Test;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * xml形式配置spring 测试
@@ -21,6 +24,15 @@ public class XmlTest {
 //        User user = applicationContext.getBean(User.class);
         applicationContext.getBean(UserFactoryBean.class);
         System.out.println("end");
+    }
+
+
+    @Test
+    public void testBeanFactory() {
+        BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("bean1.xml"));
+        System.out.println("容器启动完成");
+        User user = (User)beanFactory.getBean("userFactory");
+        System.out.println(user);
     }
 
 
