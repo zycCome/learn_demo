@@ -7,10 +7,7 @@ import lombok.Data;
 import org.junit.Test;
 import org.springframework.util.AntPathMatcher;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 测试url匹配的可行性
@@ -52,7 +49,7 @@ public class Test1 {
 
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-//    /**
+    //    /**
 //     * 应用级别的权限缓存，除非应用更新注册的信息，否则这份缓存不会变
 //     */
 //    /**
@@ -70,7 +67,7 @@ public class Test1 {
     /**
      * 角色映射API的缓存，一个API可能会被授权给多个角色。期望角色变动时，缓存只是局部调整
      */
-    private Map<String, Map<String, RequestInfo>> roleApiMap = new HashMap<>();
+    private Map<String, Set<String>> roleApiMap = new HashMap<>();
 
 
     /**
@@ -101,8 +98,8 @@ public class Test1 {
                 //一个requestInfo可能对应多个Role
                 RequestInfo requestInfo = apiMap.get(value);
                 if (requestInfo != null) {
-                    Map<String, RequestInfo> apiMap = roleApiMap.computeIfAbsent(role, k -> new HashMap<>());
-                    apiMap.put(requestInfo.getApi(), requestInfo);
+                    Set<String> apiSet = roleApiMap.computeIfAbsent(role, k -> new HashSet<>());
+                    apiSet.add(requestInfo.getApi());
                 }
             }
         }
@@ -112,13 +109,14 @@ public class Test1 {
         String url = "/api/bus/bic/basic/user/list";
         String api = method + " " + url;
         // 获取当前用户拥有的角色列表
-        List<String> roles = CollUtil.newArrayList("ROLE_R", "ROLE_A");
+        List<String> roles = CollUtil.newArrayList("ROLE_R", "ROLE_C");
 
         boolean authorization = false;
+        //TODO 如果用字典树会不会更好？
         // 用户所有的角色拥有的权限进行hash匹配
         for (String role : roles) {
-            Map<String, RequestInfo> apiMap = roleApiMap.get(role);
-            if (apiMap != null && apiMap.containsKey(api)) {
+            Set<String> apiSet = roleApiMap.get(role);
+            if (apiSet != null && apiSet.contains(api)) {
                 authorization = true;
                 break;
             }
@@ -129,10 +127,18 @@ public class Test1 {
         } else {
             // 遍历匹配 所有的角色授权的API路径
             for (String role : roles) {
-                Map<String, RequestInfo> apiMap = roleApiMap.get(role);
-                if (apiMap != null && apiMap.values().parallelStream()
-                        .anyMatch(e -> antPathMatcher.match(e.path, url)
-                                && (e.getMethod().equals("*") || e.getMethod().equals(method)))) {
+                Set<String> apiSet = roleApiMap.get(role);
+                if (apiSet != null && apiSet.parallelStream()
+                        .anyMatch(k -> {
+                            RequestInfo e = apiMap.get(k);
+                            if (e != null) {
+                                return antPathMatcher.match(e.path, url)
+                                        && (e.getMethod().equals("*") || e.getMethod().equals(method));
+                            }
+                            return false;
+
+                        })
+                ) {
                     System.out.println("成功");
                     return;
                 }
