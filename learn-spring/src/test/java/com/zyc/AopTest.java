@@ -29,6 +29,29 @@ public class AopTest {
 
         BeanC beanC = applicationContext.getBean(BeanC.class);
         System.out.println(beanC);
+        applicationContext.close();
+
+    }
+
+    /**
+     * 测试开启事务后 和 普通AOP之间的代理关系
+     */
+    @Test
+    public void testTx() {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigOfAOP.class);
+
+
+        DemoI demo=applicationContext.getBean(DemoI.class);
+        //按Demo类型，获取不到bean
+//        DemoI demo2=applicationContext.getBean(Demo.class);
+//        System.out.println(demo2);
+        demo.printHello();
+
+
+        UserService userService = applicationContext.getBean(UserService.class);
+        userService.insertUser();
+
+        applicationContext.close();
 
 
     }

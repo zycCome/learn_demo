@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
  * @date 2021/09/05 17:46
  **/
 @Component
+//DependsOn也能处理循环依赖
+//@DependsOn("repeatedBeanB")
 @Data
 public class BeanA {
 

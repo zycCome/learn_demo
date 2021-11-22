@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author zhuyc
  * @date 2021/09/05 17:47
  **/
-@Component
+//@Component
 @Data
 public class BeanB {
 
