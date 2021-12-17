@@ -11,3 +11,6 @@ spring:
         # 将自己的服务注册到注册中心
         register-enabled: true
         #namespace: all-register-service-namespace
+        username: nacos
+        #读取环境变量的值
+        password: ${PASSWORD1}

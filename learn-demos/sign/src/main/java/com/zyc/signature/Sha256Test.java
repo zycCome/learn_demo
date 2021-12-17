@@ -1,4 +1,4 @@
-package com.zyc.learn_demo.signature;
+package com.zyc.signature;
 
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.HmacAlgorithm;

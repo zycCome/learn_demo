@@ -2,8 +2,11 @@ package com.zyc.learn_quartz.base;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.matchers.GroupMatcher;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import static org.quartz.DateBuilder.evenMinuteDate;
 import static org.quartz.JobBuilder.newJob;
@@ -36,17 +39,17 @@ public class SimpleExample2 {
         Trigger trigger = newTrigger()
                 .withIdentity("trigger1", "group1").startNow()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                    .withIntervalInSeconds(5)
+                                .withIntervalInSeconds(5)
 //                    .repeatForever()
-                    .withRepeatCount(0)
+                                .withRepeatCount(0)
                 )
                 .build();
 
         Trigger trigger2 = newTrigger()
                 .withIdentity("trigger2", "group1").startNow()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                        .withIntervalInSeconds(1)
-                        .withRepeatCount(2)
+                                .withIntervalInSeconds(1)
+                                .withRepeatCount(2)
 //                        .repeatForever()
                 )
                 /*
@@ -61,11 +64,29 @@ public class SimpleExample2 {
         System.out.println(job.getKey() + " will run at: " + runTime);
 
         scheduler.start();
-
+        List<String> triggerGroupNames = scheduler.getTriggerGroupNames();
+        System.out.println("triggerGroupNames:" + triggerGroupNames);
+        for (String groupName : triggerGroupNames) {
+            //组装group的匹配，为了模糊获取所有的triggerKey或者jobKey
+            GroupMatcher groupMatcher = GroupMatcher.groupEquals(groupName);
+            //获取所有的triggerKey
+            Set<TriggerKey> triggerKeySet = scheduler.getTriggerKeys(groupMatcher);
+            System.out.println(triggerKeySet);
+        }
         try {
-            Thread.sleep(65L * 1000L);
+            Thread.sleep(15L * 1000L);
         } catch (Exception e) {
         }
+        triggerGroupNames = scheduler.getTriggerGroupNames();
+        System.out.println("triggerGroupNames:" + triggerGroupNames);
+        for (String groupName : triggerGroupNames) {
+            //组装group的匹配，为了模糊获取所有的triggerKey或者jobKey
+            GroupMatcher groupMatcher = GroupMatcher.groupEquals(groupName);
+            //获取所有的triggerKey
+            Set<TriggerKey> triggerKeySet = scheduler.getTriggerKeys(groupMatcher);
+            System.out.println(triggerKeySet);
+        }
+
 
         scheduler.shutdown(true);
     }
