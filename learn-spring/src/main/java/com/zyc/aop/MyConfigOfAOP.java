@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  **/
 @EnableAspectJAutoProxy // 开启自动代理;要开启Spring的AOP，需要在配置主配置类上加上注解
 @Configuration
-@EnableAsync
+//@EnableAsync
 @ComponentScan("com.zyc.aop")
 public class MyConfigOfAOP {
     /**

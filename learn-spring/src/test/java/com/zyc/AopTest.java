@@ -1,8 +1,18 @@
 package com.zyc;
 
 import com.zyc.aop.*;
+import com.zyc.transaction.ITxA;
+import com.zyc.transaction.MyConfigOfTX;
+import com.zyc.transaction.TxB;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * 切面测试
@@ -13,11 +23,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class AopTest {
 
     @Test
-    public void test(){
+    public void test() {
         //创建IOC容器
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigOfAOP.class);
         //获取容器中的对象
-        DemoI demo=applicationContext.getBean(DemoI.class);
+        DemoI demo = applicationContext.getBean(DemoI.class);
         //按Demo类型，获取不到bean
 //        DemoI demo2=applicationContext.getBean(Demo.class);
 //        System.out.println(demo2);
@@ -33,6 +43,7 @@ public class AopTest {
 
     }
 
+
     /**
      * 测试开启事务后 和 普通AOP之间的代理关系
      */
@@ -41,15 +52,109 @@ public class AopTest {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigOfAOP.class);
 
 
-        DemoI demo=applicationContext.getBean(DemoI.class);
+        DemoI demo = applicationContext.getBean(DemoI.class);
         //按Demo类型，获取不到bean
 //        DemoI demo2=applicationContext.getBean(Demo.class);
 //        System.out.println(demo2);
         demo.printHello();
 
+        BeanB beanB = applicationContext.getBean(BeanB.class);
+        System.out.println(beanB.getClass());
+        beanB.test1();
+
 
         UserService userService = applicationContext.getBean(UserService.class);
         userService.insertUser();
+
+        applicationContext.close();
+
+
+    }
+
+
+    /**
+     * 测试编程式事务
+     */
+    @Test
+    public void testCodeTx() {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigOfAOP.class);
+
+
+        PlatformTransactionManager transactionManager = applicationContext.getBean(PlatformTransactionManager.class);
+        /**
+         * 定义事务
+         */
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setReadOnly(false);
+        //隔离级别,-1表示使用数据库默认级别
+        def.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = transactionManager.getTransaction(def);
+        try {
+            //TODO something
+            System.out.println(2);
+            transactionManager.commit(status);
+        } catch (Exception e) {
+            transactionManager.rollback(status);
+            e.printStackTrace();
+        }
+
+        TransactionTemplate transactionTemplate = new TransactionTemplate();
+        transactionTemplate.setTransactionManager(transactionManager);
+
+
+        //开启事务保存数据
+        boolean result = transactionTemplate.execute(new TransactionCallback<Boolean>() {
+            @Override
+            public Boolean doInTransaction(TransactionStatus status) {
+                try {
+                    // TODO something
+                    System.out.println(2222);
+                } catch (Exception e) {
+                    //TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); //手动开启事务回滚
+                    status.setRollbackOnly();
+                    e.printStackTrace();
+                    return false;
+                }
+                return true;
+            }
+        });
+        System.out.println(result);
+
+
+        DemoI demo = applicationContext.getBean(DemoI.class);
+        //按Demo类型，获取不到bean
+//        DemoI demo2=applicationContext.getBean(Demo.class);
+//        System.out.println(demo2);
+        demo.printHello();
+//
+//        BeanB beanB = applicationContext.getBean(BeanB.class);
+//        System.out.println(beanB.getClass());
+//        beanB.test1();
+
+
+        UserService userService = applicationContext.getBean(UserService.class);
+        userService.insertUser();
+
+        applicationContext.close();
+
+
+    }
+
+
+    /**
+     * 测试事务代理bean
+     */
+    @Test
+    public void testTxPackage() {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigOfTX.class);
+
+        ITxA a = applicationContext.getBean(ITxA.class);
+        a.a();
+
+        TxB b = applicationContext.getBean(TxB.class);
+        b.b1();
+        b.b2();
 
         applicationContext.close();
 
