@@ -43,11 +43,21 @@ class MyLinkedList {
         return ptr.val;
     }
 
+    /**
+     * 前后哨兵确实方便，不用考虑特殊情况。
+     * @see LinkList#addFirst(java.lang.Object)
+     * @param val
+     */
     public void addAtHead(int val) {
+        // 创建新节点
         ListNode temp = new ListNode(val);
+        // 将第一个节点（非header）作为后继节点
         temp.succ = header.succ;
+        // 将第一个节点的前置节点的设置为新增节点
         header.succ.pred = temp;
+        // header的后继设置为当前
         header.succ = temp;
+        // 当前的前驱设置为header
         temp.pred = header;
         _size++;
     }
