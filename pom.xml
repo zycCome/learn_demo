@@ -13,6 +13,7 @@
         <module>learn-druid</module>
         <module>learn-demos</module>
         <module>design-pattern</module>
+        <module>learn-mybatis</module>
         <module>flowable</module>
     </modules>
     <parent>
