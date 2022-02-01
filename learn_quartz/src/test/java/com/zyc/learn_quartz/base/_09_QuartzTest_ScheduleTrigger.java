@@ -42,7 +42,7 @@ public class _09_QuartzTest_ScheduleTrigger {
             //上面指定了job，这里可以不用指定job了
             scheduler.scheduleJob(trigger);
 
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(20);
             scheduler.shutdown();
 
         } catch (SchedulerException se) {

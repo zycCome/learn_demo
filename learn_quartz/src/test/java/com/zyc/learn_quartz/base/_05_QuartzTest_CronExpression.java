@@ -36,7 +36,8 @@ public class _05_QuartzTest_CronExpression {
 
             scheduler.scheduleJob(job, trigger);
 
-            TimeUnit.SECONDS.sleep(300000);
+            TimeUnit.SECONDS.sleep(30);
+            scheduler.deleteJob(job.getKey());
             scheduler.shutdown();
 
         } catch (SchedulerException se) {
