@@ -38,7 +38,7 @@ public class AdvanceExecuteQuartzTest {
                     .startNow()
                     .forJob("job1", "group1")
                     .withSchedule(
-                            CronScheduleBuilder.cronSchedule("31 * * * * ? *")
+                            CronScheduleBuilder.cronSchedule("35 * * * * ? *")
                     )
                     .build();
 
