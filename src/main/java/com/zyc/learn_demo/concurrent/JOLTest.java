@@ -66,7 +66,7 @@ public class JOLTest {
 
     @Test
     public void testBiasedLockingStartupDelay() {
-        //注释下面的代码会发现：没有使用偏向锁
+//        //注释下面的代码会发现：没有使用偏向锁
 //        try {
 //            Thread.sleep(5000);
 //        } catch (InterruptedException e) {

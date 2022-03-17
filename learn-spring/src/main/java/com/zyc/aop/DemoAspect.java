@@ -18,6 +18,13 @@ public class DemoAspect {
 
 
     /**
+     * 抽取公共的切点，本类以及其他切面类都可以使用
+     */
+    @Pointcut("execution(public void com.zyc.aop.Demo.printHello2(..))")
+    public void cut3() {
+    }
+
+    /**
      * 用于测试 创建代理时，是否是用所有advisor来遍历的
      */
     @Pointcut("execution(public void com.zyc.aop.BeanA.test1())")
@@ -30,6 +37,14 @@ public class DemoAspect {
     @Before("cut()")
     public void beforePrint() {
         System.out.println("开始执行");
+    }
+
+    /**
+     * 前置通知
+     */
+    @Before("cut3()")
+    public void beforePrint3() {
+        System.out.println("测试开始执行");
     }
 
     /**

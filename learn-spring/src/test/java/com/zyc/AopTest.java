@@ -31,7 +31,11 @@ public class AopTest {
         //按Demo类型，获取不到bean
 //        DemoI demo2=applicationContext.getBean(Demo.class);
 //        System.out.println(demo2);
+
         demo.printHello();
+// 转不了，因为有接口，所以是用jdk 动态代理实现的
+//        Demo d1 = (Demo)demo;
+//        d1.printHello2();
 
         //如果找到多个相同类型的组件，那么再将属性的名称作为组件的id，到IOC容器中进行查找
         BeanA beanA = applicationContext.getBean(BeanA.class);

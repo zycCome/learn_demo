@@ -14,8 +14,8 @@ import javax.sql.DataSource;
  * @author zhuyc
  * @date 2021/11/10 21:51
  **/
-//@Configuration
-//@EnableTransactionManagement
+@Configuration
+@EnableTransactionManagement
 public class TxConfig {
 
     @Bean
