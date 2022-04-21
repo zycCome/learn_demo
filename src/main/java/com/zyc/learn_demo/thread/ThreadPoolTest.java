@@ -158,5 +158,17 @@ public class ThreadPoolTest {
 
     }
 
+    @Test
+    public void testCachedThreadPool() {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.submit(() -> {
+            System.out.println(111);
+        });
+        executorService.submit(() -> {
+            System.out.println(111);
+        });
+
+        System.out.println("end");
+    }
 
 }

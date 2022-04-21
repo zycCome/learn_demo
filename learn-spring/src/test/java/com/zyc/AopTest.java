@@ -33,6 +33,7 @@ public class AopTest {
 //        System.out.println(demo2);
 
         demo.printHello();
+        demo.printHello2();
 // 转不了，因为有接口，所以是用jdk 动态代理实现的
 //        Demo d1 = (Demo)demo;
 //        d1.printHello2();

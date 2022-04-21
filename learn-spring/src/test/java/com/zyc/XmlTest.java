@@ -20,6 +20,7 @@ public class XmlTest {
         System.out.println("容器启动完成");
         User user = (User)applicationContext.getBean("userFactory");
         User user2 = (User)applicationContext.getBean("userFactory");
+        UserFactoryBean userFactoryBean= (UserFactoryBean)applicationContext.getBean("&userFactory");
         System.out.println(user == user2);
 //        User user = applicationContext.getBean(User.class);
         applicationContext.getBean(UserFactoryBean.class);

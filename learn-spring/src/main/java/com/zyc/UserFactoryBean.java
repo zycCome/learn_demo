@@ -28,6 +28,7 @@ public class UserFactoryBean implements FactoryBean<User> {
 
     @Override
     public boolean isSingleton() {
-        return false;
+        // 返回ture表示单例，即getObject只会调用一次。会缓存
+        return true;
     }
 }

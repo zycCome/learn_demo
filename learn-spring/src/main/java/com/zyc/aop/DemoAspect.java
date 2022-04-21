@@ -1,12 +1,15 @@
 package com.zyc.aop;
 
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.core.annotation.Order;
 
 /**
  * @author zhuyc
  * @date 2021/09/07 08:00
  **/
 @Aspect // 表明这是一个切面类
+@Order(-1)
 public class DemoAspect {
 
     /**
@@ -39,12 +42,40 @@ public class DemoAspect {
         System.out.println("开始执行");
     }
 
+    @Around("cut()")
+    public Object roundAsp(ProceedingJoinPoint pj){
+        System.out.println("环绕前");
+
+        Object proceed = null;
+        try {
+            Object[] args = pj.getArgs();
+            //如果需要重新设置参数，则调用proceed的有参方法，否则直接调用无参方法即可
+            proceed = pj.proceed(args);
+        } catch (Throwable throwable) {
+            System.out.println("异常");
+            throwable.printStackTrace();
+        }
+
+        System.out.println("环绕后");
+
+        return proceed;
+    }
+
+    /**
+     * 前置通知
+     */
+    @Before("cut()")
+    public void beforePrint2() {
+        System.out.println("开始执行2");
+    }
+
+
     /**
      * 前置通知
      */
     @Before("cut3()")
     public void beforePrint3() {
-        System.out.println("测试开始执行");
+        System.out.println("cut3测试开始执行");
     }
 
     /**
