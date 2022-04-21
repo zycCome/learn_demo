@@ -16,6 +16,7 @@
         <module>learn-mybatis</module>
         <module>flowable</module>
         <module>html2word</module>
+        <module>learn_zookeeper</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
