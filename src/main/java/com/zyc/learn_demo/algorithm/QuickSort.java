@@ -62,7 +62,7 @@ public class QuickSort {
 
     @Test
     public void test() {
-        int arr[] = {2, 3,4,8,4, 7, 9, 6, 4, 5, 56, 55,42, 34, 324,55, 44};
+        int arr[] = {23, 3,4,8,55,4, 7, 9, 6, 4, 5, 56, 2,42, 34, 2,55, 44};
         sort(arr, 0, arr.length - 1);
 
         for (int a : arr)  //遍历数组进行打印

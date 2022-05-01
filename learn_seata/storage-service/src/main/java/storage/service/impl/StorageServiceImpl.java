@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import storage.mapper.StorageMapper;
+import storage.model.Storage;
 import storage.service.StorageService;
+
+import java.util.List;
 
 /**
  * @author jianjun.ren
@@ -26,6 +29,9 @@ public class StorageServiceImpl implements StorageService {
         if (used > 100) {
             throw new RuntimeException("used to much : " + used);
         }
+        long t1 = System.currentTimeMillis();
+        Storage byIdInLock = storageMapper.getByIdInLock(productId);
+        log.error("select time:" + (System.currentTimeMillis() - t1));
         int index = storageMapper.updateUsed(productId, used);
         return index > 0;
     }

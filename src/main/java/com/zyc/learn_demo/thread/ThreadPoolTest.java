@@ -1,5 +1,6 @@
 package com.zyc.learn_demo.thread;
 
+import cn.hutool.core.thread.ThreadFactoryBuilder;
 import org.junit.jupiter.api.Test;
 import sun.misc.Unsafe;
 
@@ -52,7 +53,7 @@ public class ThreadPoolTest {
      */
     @Test
     public void testExecuteMoreWork() {
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(1, 2, 30, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), Executors.defaultThreadFactory()
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(2, 2, 30, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), Executors.defaultThreadFactory()
                 , new ThreadPoolExecutor.AbortPolicy());
         executor.allowCoreThreadTimeOut(true);
         new Thread(() -> {
@@ -169,6 +170,32 @@ public class ThreadPoolTest {
         });
 
         System.out.println("end");
+    }
+
+
+    @Test
+    public void testSynchronousQueue() throws InterruptedException {
+        // 该场景,队列中不会有一个任务在等待(因为这个队列存不了东西)
+        ThreadPoolExecutor distributeExecutor = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS,
+                new SynchronousQueue<>(), new ThreadFactoryBuilder().setNamePrefix("pushServer-thread-").build(), new ThreadPoolExecutor.AbortPolicy());
+
+        for (int i = 0; i < 4; i++) {
+            int j = i;
+            //第四个线程直接报错了
+            distributeExecutor.execute(() -> {
+                System.out.println(Thread.currentThread().getName() + " i:"+ j + "start");
+                try {
+                    Thread.sleep(5 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + " i:"+ j + "end");
+
+            });
+        }
+
+        Thread.sleep(20 * 1000);
+
     }
 
 }

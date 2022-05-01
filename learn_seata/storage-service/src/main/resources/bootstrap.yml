@@ -50,3 +50,6 @@ seata:
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
+logging:
+  level:
+    storage.mapper: debug

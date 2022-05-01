@@ -39,11 +39,11 @@ public class OrderServiceApplication {
             .setUserId(userId)
             .setStatus(0);
 
-        //测试传xid，是否依赖本地事务注解（ @Transactional）
-        Order2 order2 = new Order2();
-        BeanUtils.copyProperties(order,order2);
-        order2.setUserId(order2.getUserId() + 20000);
-        orderMapper2.insert(order2);
+//        //测试传xid，是否依赖本地事务注解（ @Transactional）
+//        Order2 order2 = new Order2();
+//        BeanUtils.copyProperties(order,order2);
+//        order2.setUserId(order2.getUserId() + 20000);
+//        orderMapper2.insert(order2);
 
         return orderService.create(order);
     }

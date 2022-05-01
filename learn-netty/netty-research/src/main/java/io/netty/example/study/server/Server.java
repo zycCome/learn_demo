@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 public class Server {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {
+
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         //指定I/O 模式
         serverBootstrap.channel(NioServerSocketChannel.class);

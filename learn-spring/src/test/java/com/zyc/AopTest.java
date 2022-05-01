@@ -166,4 +166,21 @@ public class AopTest {
 
     }
 
+
+    /**
+     * 测试事务超时
+     */
+    @Test
+    public void testTxTimeout() throws InterruptedException {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigOfAOP.class);
+
+
+        UserService userService = applicationContext.getBean(UserService.class);
+        userService.timeoutTest();
+
+        applicationContext.close();
+
+
+    }
+
 }

@@ -47,10 +47,10 @@ public class DataSourceConfiguration {
         druidDataSource.setPassword("123456");
         druidDataSource.setUrl("jdbc:mysql://zhuyc.top:13306/order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true");
         druidDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-//         return new DataSourceProxy(druidDataSource);
+         return new DataSourceProxy(druidDataSource);
 
         // DataSourceProxyXA for XA mode
-        return new DataSourceProxyXA(druidDataSource);
+//        return new DataSourceProxyXA(druidDataSource);
     }
 
 //    @Bean("jdbcTemplate")

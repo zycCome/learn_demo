@@ -12,7 +12,7 @@ import javax.persistence.Table;
  * @author jianjun.ren
  * @since 2021/02/16
  */
-@Table(name = "tab_order")
+@Table(name = "tab_storage")
 @Data
 @Accessors(chain = true)
 public class Storage {

@@ -44,6 +44,11 @@ public class BusinessServiceApplication {
             log.error("库存操作失败！");
             throw e;
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return "ok";
     }
 
