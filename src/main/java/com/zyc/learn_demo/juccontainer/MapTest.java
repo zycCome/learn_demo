@@ -2,8 +2,10 @@ package com.zyc.learn_demo.juccontainer;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * @author zhuyc
@@ -37,6 +39,15 @@ public class MapTest {
         System.out.println(map.get("a"));
         System.out.println(map.get("d"));
 
+    }
+
+
+    public void testGeneric() {
+        List<String> a = new ArrayList<>();
+        a.add("asdas");
+
+
+        String s = a.get(0);
     }
 
 }

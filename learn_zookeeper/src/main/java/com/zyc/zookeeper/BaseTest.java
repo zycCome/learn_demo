@@ -1,5 +1,6 @@
 package com.zyc.zookeeper;
 
+import com.zyc.zookeeper.state.OrderMonitorListener;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.NodeCache;
@@ -37,7 +38,7 @@ public class BaseTest {
                 // ip端口号
                 .connectString(host + ":12181")
                 // 会话超时
-                .sessionTimeoutMs(5000)
+                .sessionTimeoutMs(50000)
                 // 重试机制，这里是超时后1000毫秒重试一次
                 .retryPolicy(new RetryNTimes(0, 1000))
                 // 名称空间，在操作节点的时候，会以这个为父节点
@@ -120,6 +121,18 @@ public class BaseTest {
         //        TimeUnit.SECONDS.sleep(1000);
         //关 闭
         nodeCache.close();
+    }
+
+
+    /**
+     * 监听ZK的连接、断开事件
+     */
+    @Test
+    public void stateListener() throws InterruptedException {
+        OrderMonitorListener stateListener = new OrderMonitorListener(client);
+        client.getConnectionStateListenable().addListener(stateListener);
+
+        Thread.sleep(100000);
     }
 
 }
