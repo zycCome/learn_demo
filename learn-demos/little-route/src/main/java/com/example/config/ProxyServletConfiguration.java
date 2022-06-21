@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Servlet;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
  * @author zhuyc
  * @date 2021/10/15 16:23
  */
-@Configuration
+//@Configuration
 public class ProxyServletConfiguration {
     /**
      * 读取配置文件中路由设置

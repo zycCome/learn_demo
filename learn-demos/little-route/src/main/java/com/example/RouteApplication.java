@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -27,6 +28,11 @@ public class RouteApplication {
     @Bean
 //    @LoadBalanced
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        //配置HTTP超时时间
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        httpRequestFactory.setConnectionRequestTimeout(6000);
+        httpRequestFactory.setConnectTimeout(6000);
+        httpRequestFactory.setReadTimeout(6000);
+        return new RestTemplate(httpRequestFactory);
     }
 }
