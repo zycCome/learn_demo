@@ -59,6 +59,13 @@
             <artifactId>smiley-http-proxy-servlet</artifactId>
             <version>1.11</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
     </dependencies>
 
     <!--alibaba cloud 相关依赖管理-->

@@ -17,6 +17,7 @@
         <module>html2word</module>
         <module>learn_zookeeper</module>
         <module>learn-dubbo</module>
+        <module>es-learn</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

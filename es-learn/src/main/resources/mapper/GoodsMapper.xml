@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zyc.es.mapper.GoodsMapper">
+    <select id="findAll" resultType="com.zyc.es.entity.Goods">
+        select `id`,
+               `title`,
+               `price`,
+               `stock`,
+               `saleNum`,
+               `createTime`,
+               `categoryName`,
+               `brandName`,
+               `status`
+        from goods
+    </select>
+</mapper>

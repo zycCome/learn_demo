@@ -1,0 +1,22 @@
+elasticsearch:
+  host: xxx
+  port: 9200
+  userName: xxx
+  passWord:  xxx
+spring:
+  # 应用名称
+  application:
+    name: elasticsearch-spring-data
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/es?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowMultiQueries=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  elasticsearch:
+    rest:
+      # 定位ES的位置
+      uris: http:/xxx:9200
+mybatis:
+  type-aliases-package: com.thr.elastisearch.domain
+  mapper-locations: classpath:mapper/*.xml
+
