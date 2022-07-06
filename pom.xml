@@ -18,6 +18,8 @@
         <module>learn_zookeeper</module>
         <module>learn-dubbo</module>
         <module>es-learn</module>
+        <module>learn-kafka</module>
+        <module>learn-demos/webclient</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

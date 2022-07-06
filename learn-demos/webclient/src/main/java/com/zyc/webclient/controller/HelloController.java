@@ -1,0 +1,38 @@
+package com.zyc.webclient.controller;
+
+import cn.hutool.json.JSONUtil;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+
+/**
+ * @Description TODO
+ * @Author zilu
+ * @Date 2022/6/27 8:02 PM
+ * @Version 1.0.0
+ **/
+@RestController
+public class HelloController {
+
+
+
+    @GetMapping("/hello")
+    public Mono<String> hello() {   // 【改】返回类型为Mono<String>
+        return Mono.just("Welcome to reactive world ~");     // 【改】使用Mono.just生成响应式数据
+    }
+
+    @GetMapping("/mvc")
+    public String mvc() {
+        return "mvc";
+    }
+
+
+    @PostMapping("/data")
+    public String data(@RequestBody Person person) {
+        System.out.println(JSONUtil.toJsonStr(person));
+        return "data";
+    }
+
+}
