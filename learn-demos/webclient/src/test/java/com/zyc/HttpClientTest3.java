@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class HttpClientTest3 {
 
-    int requestSize = 1000;
+    int requestSize = 10000;
 
     AtomicInteger success = new AtomicInteger(0);
     AtomicInteger failed = new AtomicInteger(0);
@@ -54,10 +54,11 @@ public class HttpClientTest3 {
     @Test
     public void testHttpClient() throws InterruptedException {
         initial();
-        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
-        String body = "{\"invoke_info\":{\"pos_1\":[{}],\"pos_2\":[{}],\"pos_3\":[{}]}}";
+//        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
+        String url = "http://localhost:8080/date";
+        String body = "{}";
 
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 10,
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1000, 1000,
                 60L, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(100000), threadFactory);
 
@@ -85,12 +86,20 @@ public class HttpClientTest3 {
                 return EntityUtils.toString(response.getEntity());
             }
         };
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setEntity(new StringEntity(body, Consts.UTF_8));
+
+
+
 
         for (int i = 0; i < requestSize; i++) {
+//            try {
+//                Thread.sleep(1);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
             threadPoolExecutor.submit(() -> {
                         try {
+                            HttpPost httpPost = new HttpPost(url);
+                            httpPost.setEntity(new StringEntity(body, Consts.UTF_8));
                             String result = httpClient.execute(httpPost, responseHandler); // 线程可能会在这里被阻塞
                             if (result == null) {
                                 failed.incrementAndGet();
@@ -98,6 +107,7 @@ public class HttpClientTest3 {
                                 success.incrementAndGet();
                             }
                         } catch (Exception e) {
+                            failed.incrementAndGet();
                             log.error(e.getMessage(), e);
                         }
                         countDownLatch.countDown();
@@ -122,13 +132,13 @@ public class HttpClientTest3 {
                         return Long.parseLong(value) * 1000;
                     }
                 }
-                return 60 * 1000;//如果没有约定，则默认定义时长为60s
+                return -1 ;//如果没有约定，则默认定义时长为0s
             }
         };
 
         PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setMaxTotal(50000);
-        connectionManager.setDefaultMaxPerRoute(50000);//例如默认每路由最高50并发，具体依据业务来定
+        connectionManager.setMaxTotal(10000);
+        connectionManager.setDefaultMaxPerRoute(200);//例如默认每路由最高50并发，具体依据业务来定
 
         HttpParams params = new BasicHttpParams();
         //设置连接超时时间
@@ -150,9 +160,12 @@ public class HttpClientTest3 {
                 .setKeepAliveStrategy(myStrategy)
                 .setDefaultRequestConfig(RequestConfig.custom().setStaleConnectionCheckEnabled(true).build())
                 .setRetryHandler(new DefaultHttpRequestRetryHandler(0, false))
+                .evictExpiredConnections()
+                // 开启后台线程清除闲置的连接
+                .evictIdleConnections(30, TimeUnit.SECONDS)
                 .build();
 
-        httpClient = HttpClients.createDefault();
+//        httpClient = HttpClients.createDefault();
 
     }
 

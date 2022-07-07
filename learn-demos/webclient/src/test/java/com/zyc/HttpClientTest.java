@@ -55,7 +55,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class HttpClientTest {
 
-    int requestSize = 1000;
+    int requestSize = 10000;
 
     AtomicInteger success = new AtomicInteger(0);
     AtomicInteger failed = new AtomicInteger(0);
@@ -80,19 +80,18 @@ public class HttpClientTest {
         okHttpClient.dispatcher().setMaxRequestsPerHost(1000000);
         okHttpClient.dispatcher().setMaxRequests(1000000);
 
-        RequestBody body = RequestBody.create(
-                MediaType.parse("application/json"), "{}");
+
 
 
         CountDownLatch countDownLatch = new CountDownLatch(100);
         long startTime = System.currentTimeMillis();
-        requestWithOkhttp(okHttpClient, body , 100,countDownLatch);
+        requestWithOkhttp(okHttpClient, null , 100,countDownLatch);
         countDownLatch.await();
         log.info("热身结束,耗时："+(System.currentTimeMillis() - startTime));
 
         startTime = System.currentTimeMillis();
         countDownLatch = new CountDownLatch(requestSize);
-        requestWithOkhttp(okHttpClient, body , requestSize, countDownLatch);
+        requestWithOkhttp(okHttpClient, null , requestSize, countDownLatch);
         countDownLatch.await();
         log.info("耗时：{},success:{},failed:{}",(System.currentTimeMillis() - startTime),success.get(),failed.get());
 
@@ -148,12 +147,11 @@ public class HttpClientTest {
     public void testHttpClient() throws InterruptedException {
         initialHttpClient();
 
-        HttpPost httpPost = new HttpPost("https://ug.baidu.com/mcp/pc/pcsearch");
-        httpPost.setEntity(new StringEntity("{\"invoke_info\":{\"pos_1\":[{}],\"pos_2\":[{}],\"pos_3\":[{}]}}", Consts.UTF_8));
+
 
 //        httpPost.setProtocolVersion(HttpVersion.HTTP_1_0);
 //        httpPost.addHeader(HTTP.CONN_DIRECTIVE, HTTP.CONN_CLOSE);
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10, 10,
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(500, 500,
                 60L, TimeUnit.SECONDS,
                 new ArrayBlockingQueue<>(100000), threadFactory);
 
@@ -161,13 +159,13 @@ public class HttpClientTest {
 
         CountDownLatch countDownLatch = new CountDownLatch(100);
         long startTime = System.currentTimeMillis();
-        requestWithHttpClient(httpclient , httpPost,100,countDownLatch,threadPoolExecutor);
+        requestWithHttpClient(100,countDownLatch,threadPoolExecutor);
         countDownLatch.await();
         log.info("热身结束,耗时："+(System.currentTimeMillis() - startTime));
 
         startTime = System.currentTimeMillis();
         countDownLatch = new CountDownLatch(requestSize);
-        requestWithHttpClient(httpclient , httpPost,requestSize, countDownLatch,threadPoolExecutor);
+        requestWithHttpClient(requestSize, countDownLatch,threadPoolExecutor);
         countDownLatch.await();
         log.info("耗时：{},success:{},failed:{}",(System.currentTimeMillis() - startTime),success.get(),failed.get());
 
@@ -177,10 +175,15 @@ public class HttpClientTest {
 
     private void requestWithOkhttp(OkHttpClient okHttpClient, RequestBody body, int requestSize, CountDownLatch countDownLatch) {
         for (int i = 0; i < requestSize; i++) {
+
+            RequestBody body2 = RequestBody.create(
+                    MediaType.parse("application/json"), "{}");
             Request request = new Request.Builder()
                     .url("http://localhost:8080/date")
-                    .post(body)
+                    .post(body2)
                     .build();
+
+
             Call call = okHttpClient.newCall(request);
             call.enqueue(new Callback() {
                 @Override
@@ -209,6 +212,8 @@ public class HttpClientTest {
         for (int i = 0; i < requestSize; i++) {
             Mono<ClientResponse> res = webClient
                     .method(HttpMethod.POST)
+//                    .uri("http://localhost:8080/date")
+//                    .body(BodyInserters.fromObject("{}"))
                     .uri("http://localhost:8080/date")
                     .body(BodyInserters.fromObject("{}"))
                     .exchange();
@@ -218,6 +223,7 @@ public class HttpClientTest {
 //                        System.out.println(r.statusCode());
                         r.bodyToMono(String.class).subscribe(e -> {
                             Integer a = null;
+//                            log.info(e);
                         });
                         success.incrementAndGet();
                         countDownLatch.countDown();
@@ -231,13 +237,16 @@ public class HttpClientTest {
     }
 
 
-    private void requestWithHttpClient(CloseableHttpClient httpclient2, HttpPost body, int requestSize, CountDownLatch countDownLatch, ThreadPoolExecutor threadPoolExecutor) {
+    private void requestWithHttpClient( int requestSize, CountDownLatch countDownLatch, ThreadPoolExecutor threadPoolExecutor) {
         for (int i = 0; i < requestSize; i++) {
             threadPoolExecutor.submit(() -> {
                         CloseableHttpResponse response = null;
                         try {
+                            HttpPost httpPost = new HttpPost("http://localhost:8080/date");
+                            httpPost.setEntity(new StringEntity("{}", Consts.UTF_8));
+
                             //执行请求
-                            response = httpclient.execute(body);
+                            response = httpclient.execute(httpPost);
                             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                                 HttpEntity entity = response.getEntity();
                                 countDownLatch.countDown();
@@ -256,7 +265,7 @@ public class HttpClientTest {
                                     } finally {
                                         // Closing the input stream will trigger connection release
                                         // 释放连接回到连接池
-//                                        instream.close();
+                                        instream.close();
                                     }
                                 }
                             }
@@ -266,14 +275,14 @@ public class HttpClientTest {
                             countDownLatch.countDown();
                             failed.incrementAndGet();
                         } finally {
-//                            if (response != null) {
-//                                try {
-//                                    //关闭连接(如果已经释放连接回连接池，则什么也不做)
-//                                    response.close();
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
+                            if (response != null) {
+                                try {
+                                    //关闭连接(如果已经释放连接回连接池，则什么也不做)
+                                    response.close();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     }
             );
@@ -294,7 +303,7 @@ public class HttpClientTest {
         //最大连接数
         connManager.setMaxTotal(10000);
         //默认的每个路由的最大连接数
-        connManager.setDefaultMaxPerRoute(1000);
+        connManager.setDefaultMaxPerRoute(10000);
 
 
         /**
@@ -334,9 +343,9 @@ public class HttpClientTest {
          * request请求相关配置
          */
         RequestConfig defaultRequestConfig = RequestConfig.custom()
-                .setConnectTimeout(5 * 1000)         //连接超时时间
-                .setSocketTimeout(5 * 1000)          //读超时时间（等待数据超时时间）
-                .setConnectionRequestTimeout(5000)    //从池中获取连接超时时间
+                .setConnectTimeout(50 * 1000)         //连接超时时间
+                .setSocketTimeout(50 * 1000)          //读超时时间（等待数据超时时间）
+                .setConnectionRequestTimeout(50000)    //从池中获取连接超时时间
                 .setStaleConnectionCheckEnabled(false)//检查是否为陈旧的连接，默认为true，类似testOnBorrow
                 .build();
 
@@ -351,12 +360,12 @@ public class HttpClientTest {
 
             public boolean retryRequest(IOException exception, int executionCount, HttpContext context) {
                 //Do not retry if over max retry count
-                if (executionCount >= 3) {
+                if (executionCount >= 1) {
                     return false;
                 }
                 //Timeout
                 if (exception instanceof InterruptedIOException) {
-                    return true;
+                    return false;
                 }
                 //Unknown host
                 if (exception instanceof UnknownHostException) {
@@ -392,7 +401,7 @@ public class HttpClientTest {
             public long getKeepAliveDuration(final HttpResponse response, final HttpContext context) {
                 long keepAlive = super.getKeepAliveDuration(response, context);
                 if (keepAlive == -1) {
-                    keepAlive = 50000;
+                    keepAlive = 60000;
                 }
                 return keepAlive;
             }
