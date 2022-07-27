@@ -163,6 +163,7 @@ public class HttpClientTest3 {
                 .evictExpiredConnections()
                 // 开启后台线程清除闲置的连接
                 .evictIdleConnections(30, TimeUnit.SECONDS)
+//                .setConnectionTimeToLive(40000)
                 .build();
 
 //        httpClient = HttpClients.createDefault();

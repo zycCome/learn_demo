@@ -9,5 +9,7 @@ package com.zyc.demo.api;
 public interface DemoService {
 
     String sayHello(String name);
+    String sayHello2(Integer age);
+    User sayHello2(User a);
 
 }

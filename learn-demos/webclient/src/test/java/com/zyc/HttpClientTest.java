@@ -268,6 +268,8 @@ public class HttpClientTest {
                                         instream.close();
                                     }
                                 }
+                            } else {
+                                countDownLatch.countDown();
                             }
 
                         } catch (Exception e) {
@@ -343,9 +345,9 @@ public class HttpClientTest {
          * request请求相关配置
          */
         RequestConfig defaultRequestConfig = RequestConfig.custom()
-                .setConnectTimeout(50 * 1000)         //连接超时时间
-                .setSocketTimeout(50 * 1000)          //读超时时间（等待数据超时时间）
-                .setConnectionRequestTimeout(50000)    //从池中获取连接超时时间
+                .setConnectTimeout(5 * 1000)         //连接超时时间
+                .setSocketTimeout(5 * 1000)          //读超时时间（等待数据超时时间）
+                .setConnectionRequestTimeout(1000)    //从池中获取连接超时时间
                 .setStaleConnectionCheckEnabled(false)//检查是否为陈旧的连接，默认为true，类似testOnBorrow
                 .build();
 
@@ -416,7 +418,7 @@ public class HttpClientTest {
                 .setConnectionManager(connManager)             //连接管理器
 //                .setProxy(new HttpHost("myproxy", 8080))       //设置代理
                 .setDefaultRequestConfig(defaultRequestConfig) //默认请求配置
-                .setRetryHandler(myRetryHandler)               //重试策略
+//                .setRetryHandler(myRetryHandler)               //重试策略
                 .build();
     }
 

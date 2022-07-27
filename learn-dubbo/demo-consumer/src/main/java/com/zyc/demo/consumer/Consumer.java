@@ -16,6 +16,12 @@
  */
 package com.zyc.demo.consumer;
 
+import com.alibaba.dubbo.config.ApplicationConfig;
+import com.alibaba.dubbo.config.ReferenceConfig;
+import com.alibaba.dubbo.config.RegistryConfig;
+import com.alibaba.dubbo.config.utils.ReferenceConfigCache;
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.alibaba.dubbo.rpc.service.GenericService;
 import com.zyc.demo.api.DemoService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -27,18 +33,53 @@ public class Consumer {
         System.setProperty("java.net.preferIPv4Stack", "true");
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"consumer.xml"});
         context.start();
-        DemoService demoService = (DemoService) context.getBean("demoService"); // get remote service proxy
+        normal(context);
+//        generic(context);
 
+    }
+
+    private static void generic(ClassPathXmlApplicationContext context) {
+        ReferenceConfig<GenericService> reference = new ReferenceConfig<GenericService>();
+        reference.setApplication(new ApplicationConfig("test"));
+        reference.setRegistry(new RegistryConfig("zookeeper://zhuyc.top:12181"));
+        reference.setInterface("com.zyc.demo.api.DemoService");
+        // 声明为泛化接口
+        reference.setGeneric(true);
+
+        ReferenceConfigCache cache = ReferenceConfigCache.getCache();
+        GenericService genericService = cache.get(reference);
         while (true) {
+            int i = 0;
             try {
                 Thread.sleep(1000);
-                String hello = demoService.sayHello("world"); // call remote method
-                System.out.println(hello); // get result
+                RpcContext.getContext().setAttachment("author", "zyc_"+i++);
+                // 基本类型以及Date,List,Map等不需要转换，直接调用
+                Object result = genericService.$invoke("sayHello", null,
+                        new Object[] { "world generic" });
+                System.out.println(result);
 
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
         }
 
+    }
+
+    private static void normal(ClassPathXmlApplicationContext context) {
+        // get remote service proxy
+        DemoService demoService = (DemoService) context.getBean("demoService");
+
+        while (true) {
+            try {
+                Thread.sleep(1000);
+                // call remote method
+                String hello = demoService.sayHello("world");
+                // get result
+                System.out.println(hello);
+
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        }
     }
 }

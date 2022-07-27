@@ -2,7 +2,6 @@ package com.zyc.learn_demo.thread;
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
 import org.junit.jupiter.api.Test;
-import sun.misc.Unsafe;
 
 import java.util.concurrent.*;
 import java.util.concurrent.locks.LockSupport;
@@ -176,7 +175,7 @@ public class ThreadPoolTest {
     @Test
     public void testSynchronousQueue() throws InterruptedException {
         // 该场景,队列中不会有一个任务在等待(因为这个队列存不了东西)
-        ThreadPoolExecutor distributeExecutor = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS,
+        ThreadPoolExecutor distributeExecutor = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS,
                 new SynchronousQueue<>(), new ThreadFactoryBuilder().setNamePrefix("pushServer-thread-").build(), new ThreadPoolExecutor.AbortPolicy());
 
         for (int i = 0; i < 4; i++) {

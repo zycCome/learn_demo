@@ -64,6 +64,51 @@ public class JOLTest {
         out.println(ClassLayout.parseInstance(a).toPrintable());
     }
 
+    /**
+     * 因为Object.wait机制用到了monitor对象，因此测试是否会直接使用重量级锁。
+     * 猜测：应该会。wait本身就要休眠了，自旋没有意义了
+     * 结论：确实会直接用重量级锁
+     */
+    @org.junit.Test
+    public void testWait() throws InterruptedException {
+        // 延迟偏向
+        Thread.sleep(6000);
+        Object a = new Object();
+
+        out.println("start-----");
+        out.println(ClassLayout.parseInstance(a).toPrintable());
+        new Thread() {
+            @Override
+            public void run() {
+                synchronized (a){
+                    out.println("first locking start---:"+ClassLayout.parseInstance(a).toPrintable());
+                    try {
+                        a.wait();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    out.println("first locking end---:"+ClassLayout.parseInstance(a).toPrintable());
+                }
+            }
+        }.start();
+
+        Thread.sleep(1000);
+
+        new Thread() {
+            @Override
+            public void run() {
+                synchronized (a){
+                    out.println("second locking start---:"+ClassLayout.parseInstance(a).toPrintable());
+                    a.notify();
+                    out.println("second locking end---:"+ClassLayout.parseInstance(a).toPrintable());
+                }
+            }
+        }.start();
+
+        Thread.sleep(10000);
+        out.println("end:"+ClassLayout.parseInstance(a).toPrintable());
+    }
+
     @Test
     public void testBiasedLockingStartupDelay() {
 //        //注释下面的代码会发现：没有使用偏向锁

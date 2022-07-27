@@ -23,7 +23,8 @@ public class TimeHandler {
     }
 
     public Mono<ServerResponse> getDate(ServerRequest serverRequest) {
-        return ok().contentType(MediaType.TEXT_PLAIN).body(Mono.just("Today is " + new SimpleDateFormat("yyyy-MM-dd").format(new Date())).delayElement(Duration.ofMillis(200)), String.class);
+//        System.out.println("receive");
+        return ok().contentType(MediaType.TEXT_PLAIN).body(Mono.just("Today is " + new SimpleDateFormat("yyyy-MM-dd").format(new Date())).delayElement(Duration.ofMillis(2000)), String.class);
     }
 
     private WebClient webClient = WebClient.builder()
