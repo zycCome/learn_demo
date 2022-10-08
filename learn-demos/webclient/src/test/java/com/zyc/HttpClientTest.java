@@ -32,6 +32,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
+import reactor.netty.resources.LoopResources;
 import reactor.netty.tcp.TcpClient;
 
 import javax.net.ssl.SSLException;
@@ -53,7 +54,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class HttpClientTest {
 
-    int requestSize = 100000;
+    int requestSize = 500;
 
     AtomicInteger success = new AtomicInteger(0);
     AtomicInteger failed = new AtomicInteger(0);
@@ -109,7 +110,7 @@ public class HttpClientTest {
                 .pendingAcquireMaxCount(11)
                 .build();
 
-//        LoopResources loop = LoopResources.create("kl-event-loop", 1000, 1000, true);
+        LoopResources loop = LoopResources.create("kl-event-loop", 10, 10, true);
         TcpClient tcpClient = TcpClient
                 .create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
@@ -117,8 +118,7 @@ public class HttpClientTest {
                     connection.addHandlerLast(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS));
                     connection.addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS));
                 })
-//                .runOn(loop)
-                ;
+                .runOn(loop);
 
         HttpClient httpClient = HttpClient.create(provider);
         WebClient webClient = WebClient.builder()
@@ -237,24 +237,21 @@ public class HttpClientTest {
 
 
     private void requestWithWebClient(WebClient webClient, int requestSize, CountDownLatch countDownLatch) throws InterruptedException {
-//        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(20, 20,
+//        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(100, 100,
 //                60L, TimeUnit.SECONDS,
 //                new ArrayBlockingQueue<>(100000), threadFactory);
 //        Scheduler scheduler = Schedulers.fromExecutor(threadPoolExecutor);
         for (int i = 0; i < requestSize; i++) {
             concurrentConnections.acquire();
             String url = "http://localhost:8080/date";
-            if((i & 1) == 0) {
-                url = "http://localhost:8081/date";
-            }
-            Mono<ClientResponse> res = webClient
+//            if((i & 1) == 0) {
+//                url = "http://localhost:8080/date";
+//            }
+            webClient
                     .method(HttpMethod.POST)
                     .uri(url)
                     .body(BodyInserters.fromObject("{}"))
-                    .exchange();
-
-
-            res.subscribe(r -> {
+                    .exchange().subscribe(r -> {
 //                        System.out.println(Thread.currentThread().getName());
 //                        System.out.println(r.statusCode());
 //                        r.bodyToMono(String.class).subscribeOn().subscribe(e -> {
@@ -275,6 +272,8 @@ public class HttpClientTest {
                         concurrentConnections.release();
                     });
         }
+
+
     }
 
 
