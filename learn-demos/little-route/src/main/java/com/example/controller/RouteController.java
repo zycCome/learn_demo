@@ -4,14 +4,9 @@ import com.example.service.RoutingDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * 路由服务
@@ -38,10 +33,16 @@ public class RouteController {
         return value;
     }
 //
-    @RequestMapping(value = "/**", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
-    public ResponseEntity catchAll(HttpServletRequest request, HttpServletResponse response) {
-        ResponseEntity<String> responseEntity = routingDelegate.redirect(request, response, "http://10.30.30.50:38080", "");
-        return responseEntity;
+//    @RequestMapping(value = "/**", method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+//    public ResponseEntity catchAll(HttpServletRequest request, HttpServletResponse response) {
+//        ResponseEntity<String> responseEntity = routingDelegate.redirect(request, response, "http://10.30.30.50:38080", "");
+//        return responseEntity;
+//    }
+
+    @RequestMapping("/qw/callback")
+    public String callback() {
+        System.out.println("111");
+        return "success";
     }
 
 }
