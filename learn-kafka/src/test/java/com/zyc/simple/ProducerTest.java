@@ -39,7 +39,7 @@ public class ProducerTest {
          * value--告诉kafkaProducer，所发送消息的value值，即消息内容。注意：value值类型需与前面设置的value.serializer值匹配
          */
         try {
-            ProducerRecord producerRecord = new ProducerRecord("NOTICE_BROADCAST_TOPIC", 1, "{\"appId\":22222,\"createTime\":1655888288947,\"linkTime\":1655888288947,\"messageId\":296517,\"noticeMessage\":\"2B67D6BCA2435EEE07C3\",\"noticeNum\":0,\"noticeQoc\":0,\"noticeTime\":1655888462647,\"noticeType\":\"editOrganize\",\"organizeCode\":\"2B67D6BCA2435EEE07C3\",\"organizeId\":548,\"priority\":0,\"routeKey\":548,\"sendTime\":1655888288947,\"spenId\":0,\"status\":1,\"userId\":11111}");
+            ProducerRecord producerRecord = new ProducerRecord("WORK_WX_EVENT_TOPIC", 1, "{\"type\":1,\"deviceSn\":\"84E0F42710011501\",\"timeStamp\":1672276299001,\"admitCode\":\"07D5220906130924W21FVSDS\",\"organizeId\":702,\"userId\":2005,\"appId\":20050055,\"organizeCode\":\"07D52D551B9C724C0895\"}");
             Future<SendResult<Integer, String>> listenableFuture = producer.send(producerRecord);
             boolean isResult = true;
             if (isResult) {

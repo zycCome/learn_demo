@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class HttpClientTest3 {
 
-    int requestSize = 10000;
+    int requestSize = 1000;
 
     AtomicInteger success = new AtomicInteger(0);
     AtomicInteger failed = new AtomicInteger(0);
@@ -54,8 +54,8 @@ public class HttpClientTest3 {
     @Test
     public void testHttpClient() throws InterruptedException {
         initial();
-//        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
-        String url = "http://localhost:8080/date";
+        String url = "https://ug.baidu.com/mcp/pc/pcsearch";
+//        String url = "http://localhost:8080/date";
         String body = "{}";
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1000, 1000,

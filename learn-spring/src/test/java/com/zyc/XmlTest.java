@@ -37,4 +37,16 @@ public class XmlTest {
     }
 
 
+    /**
+     * 测试lazy-init为true+依赖的场景
+     */
+    @Test
+    public void actualTimeDependencyLazyBean() {
+        System.out.println("spring容器启动中...");
+        String beanXml = "classpath:demo11/actualTimeDependencyLazyBean.xml";
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(beanXml); //启动spring容器
+        System.out.println("spring容器启动完毕...");
+    }
+
+
 }

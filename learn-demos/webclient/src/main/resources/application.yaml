@@ -4,3 +4,5 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: true
+server:
+  port: 8081
