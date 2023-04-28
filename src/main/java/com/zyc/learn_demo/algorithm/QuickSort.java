@@ -68,6 +68,15 @@ public class QuickSort {
         for (int a : arr)  //遍历数组进行打印
             System.out.print(a + "  ");
         System.out.println();
+
+
+
+        int arr2[] = {5,4,6,3};
+        sort(arr2, 0, arr2.length - 1);
+
+        for (int a : arr2)  //遍历数组进行打印
+            System.out.print(a + "  ");
+        System.out.println();
     }
 
 }

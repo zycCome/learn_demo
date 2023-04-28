@@ -20,6 +20,7 @@
         <module>es-learn</module>
         <module>learn-kafka</module>
         <module>learn-demos/webclient</module>
+        <module>learn-lite-flow</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
