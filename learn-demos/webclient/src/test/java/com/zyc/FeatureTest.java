@@ -98,6 +98,20 @@ public class FeatureTest {
         download("https://downloads.apache.org/zookeeper/zookeeper-3.5.10/apache-zookeeper-3.5.10-bin.tar.gz","/Users/zilu/Desktop/a1.tar.gz",0);
     }
 
+
+    /**
+     * 测试请求完成后，中断HttpGet 会有什么效果。比如connect是否还能复用，或者对正在复用的connect有什么影响
+     * 现象：第一个请求结束后，第二个请求发起前对第二个请求无影响，仍然可以正常使用（并且复用了）
+     * 现象：第一个请求结束后，第二个请求发起后 对第二个请求无影响，仍然可以正常使用（并且复用了）
+     * @throws IOException
+     */
+    @Test
+    public void testHardTimeOutAfterCompleted() throws IOException {
+        initial();
+        download("https://downloads.apache.org/zookeeper/zookeeper-3.5.10/apache-zookeeper-3.5.10-bin.tar.gz","/Users/zilu/Desktop/d.tar.gz",5);
+        download("https://downloads.apache.org/zookeeper/zookeeper-3.5.10/apache-zookeeper-3.5.10-bin.tar.gz","/Users/zilu/Desktop/d1.tar.gz",0);
+    }
+
     public void download(String url,String path,int timeout) throws IOException {
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response = null;

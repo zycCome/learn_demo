@@ -197,4 +197,53 @@ public class ThreadPoolTest {
 
     }
 
+
+    /**
+     * 测试SynchronousQueue能否阻塞多个线程.结论可以：并且默认是用不公平的栈
+     * @throws InterruptedException
+     */
+    @Test
+    public void testSynchronousQueue2() throws InterruptedException {
+        // 该场景,队列中不会有一个任务在等待(因为这个队列存不了东西)
+        SynchronousQueue<String> synchronousQueue = new SynchronousQueue<>();
+
+        for (int i = 0; i < 4; i++) {
+            int j = i;
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        synchronousQueue.put("push object:" + j);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            thread.start();
+        }
+
+        System.out.println("push complete");
+
+        for (int i = 0; i < 4; i++) {
+            int j = i;
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        String take = synchronousQueue.take();
+                        System.out.println("thread:"+j + " consumer:"+take);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            thread.start();
+        }
+
+        Thread.sleep(20 * 1000);
+
+    }
+
+
+
 }

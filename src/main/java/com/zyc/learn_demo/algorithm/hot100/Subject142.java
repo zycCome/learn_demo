@@ -1,5 +1,8 @@
 package com.zyc.learn_demo.algorithm.hot100;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * @Description 环形链表
  * @Author zilu
@@ -55,6 +58,8 @@ public class Subject142 {
         node2.setNext(node1);
 //        node3.setNext(node4);
 //        node4.setNext(node2);
+
+        Queue<ListNode> queue = new PriorityQueue((node11, node12) -> node1.val - node2.val );
 
         System.out.println(new Subject142().hasCycle(node1));
     }
