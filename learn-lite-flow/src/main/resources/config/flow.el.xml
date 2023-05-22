@@ -9,12 +9,67 @@
         SWITCH(aSwitch).to(b, c);
     </chain>
 
+
+
+
     <chain name="chain3">
         THEN( s1,c);
     </chain>
 
     <chain name="chain4">
         THEN( a ,WHEN(b, c, a));
+    </chain>
+
+    <chain name="chain5">
+        THEN(
+        IF(x, t1),
+        a
+        );
+    </chain>
+
+    <chain name="t1">
+        THEN( a ,WHEN(b, c, a));
+    </chain>
+
+
+    <chain name="chain6">
+        t2 = THEN( b,b,b,b).id("t2");
+
+        THEN(
+        a,
+        IF(x, t2),
+        b
+        );
+    </chain>
+
+
+    <chain name="chain6_1">
+        THEN(
+        a,
+        IF(x, THEN( b,b,b,b).id("t2")),
+        b
+        );
+    </chain>
+
+
+    <chain name="chain7">
+        t2 = THEN( c,c).id("t2");
+        t3 = THEN(t2,c,c,c).id("t3");
+
+        THEN(
+        b,
+        SWITCH(aSwitch).to(a, t3)
+        );
+    </chain>
+
+
+    <chain name="chain7_1">
+
+        THEN(
+        THEN(b.data("zyc")).id("sss"),
+        SWITCH(aSwitch2).to(b,c),
+        a
+        );
     </chain>
 
 
