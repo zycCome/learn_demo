@@ -22,6 +22,7 @@
         <module>learn-demos/webclient</module>
         <module>learn-lite-flow</module>
         <module>learn-beancopy</module>
+        <module>hign-jdk-feature</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
