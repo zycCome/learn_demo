@@ -1,7 +1,6 @@
 package com.zyc.learn_demo.io;
 
 import org.junit.Test;
-import sun.nio.ch.DirectBuffer;
 
 import java.nio.ByteBuffer;
 
@@ -14,11 +13,16 @@ import java.nio.ByteBuffer;
 public class DirectIo {
 
     @Test
-    public void byteBufferTest() {
+    public void byteBufferTest() throws InterruptedException {
         // 分配 10M 堆外内存
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(10 * 1024 * 1024);
         // 释放堆外内存
-        ((DirectBuffer) byteBuffer).cleaner().clean();
+//        ((DirectBuffer) byteBuffer).cleaner().clean();
+
+        System.gc();
+
+        Thread.sleep(100000);
+        System.out.println(1111);
     }
 
 }
