@@ -21,6 +21,9 @@
         <module>learn-kafka</module>
         <module>learn-demos/webclient</module>
         <module>jdk-feature</module>
+        <module>learn-lite-flow</module>
+        <module>learn-beancopy</module>
+        <module>hign-jdk-feature</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -63,8 +66,15 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.7.15</version>
+            <version>5.8.11</version>
         </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+
 
     </dependencies>
 

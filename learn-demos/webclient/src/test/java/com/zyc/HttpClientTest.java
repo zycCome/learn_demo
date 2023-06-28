@@ -14,8 +14,13 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.MessageConstraints;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ConnectionKeepAliveStrategy;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
@@ -27,20 +32,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.resources.LoopResources;
 import reactor.netty.tcp.TcpClient;
 
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 import java.nio.charset.CodingErrorAction;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -336,13 +344,21 @@ public class HttpClientTest {
         }
     }
 
-    public void initialHttpClient() {
+    public void initialHttpClient(){
+        // HttpClient跳过https证书认证 https://blog.csdn.net/MrHamster/article/details/94030969
+        SSLContext sslContext = getSSLContext();
+        Registry<ConnectionSocketFactory> socketFactoryRegistry =
+                RegistryBuilder.<ConnectionSocketFactory>create()
+                        .register("http", PlainConnectionSocketFactory.INSTANCE)
+                        .register("https", new SSLConnectionSocketFactory(sslContext)).build();
+
+
         /**
          * 创建连接管理器，并设置相关参数
          */
         //连接管理器，使用无惨构造
         PoolingHttpClientConnectionManager connManager
-                = new PoolingHttpClientConnectionManager();
+                = new PoolingHttpClientConnectionManager(socketFactoryRegistry);
 
         /**
          * 连接数相关设置
@@ -455,6 +471,9 @@ public class HttpClientTest {
         };
 
 
+
+
+
         /**
          * 创建httpClient
          */
@@ -481,5 +500,34 @@ public class HttpClientTest {
 //                .build();
 
     }
+
+    private static SSLContext getSSLContext() {
+        try {
+            // 这里可以填两种值 TLS和LLS , 具体差别可以自行搜索
+            SSLContext sc = SSLContext.getInstance("TLS");
+            // 构建新对象
+            X509TrustManager manager = new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+                }
+
+                // 这里返回Null
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+            };
+            sc.init(null, new TrustManager[]{manager}, null);
+            return sc;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow>
+    <chain name="chain1">
+        THEN(a, b, c);
+    </chain>
+
+
+    <chain name="chain2">
+        SWITCH(aSwitch).to(b, c);
+    </chain>
+
+
+
+
+    <chain name="chain3">
+        THEN( s1,c);
+    </chain>
+
+    <chain name="chain4">
+        THEN( a ,WHEN(b, c, a));
+    </chain>
+
+    <chain name="chain5">
+        THEN(
+        IF(x, t1),
+        a
+        );
+    </chain>
+
+    <chain name="t1">
+        THEN( a ,WHEN(b, c, a));
+    </chain>
+
+
+    <chain name="chain6">
+        t2 = THEN( b,b,b,b).id("t2");
+
+        THEN(
+        a,
+        IF(x, t2),
+        b
+        );
+    </chain>
+
+
+    <chain name="chain6_1">
+        THEN(
+        a,
+        IF(x, THEN( b,b,b,b).id("t2")),
+        b
+        );
+    </chain>
+
+
+    <chain name="chain7">
+        t2 = THEN( c,c).id("t2");
+        t3 = THEN(t2,c,c,c).id("t3");
+
+        THEN(
+        b,
+        SWITCH(aSwitch).to(a, t3)
+        );
+    </chain>
+
+
+    <chain name="chain7_1">
+
+        THEN(
+        THEN(b.data("zyc")).id("sss"),
+        SWITCH(aSwitch2).to(b,c),
+        a
+        );
+    </chain>
+
+
+    <nodes>
+        <node id="s1" name="普通脚本" type="script" language="groovy">
+            <![CDATA[
+                def a=3;
+                def b=2;
+                defaultContext.setData("s1",a*b);
+                defaultContext.setData("h",demo.getDemoStr1());
+            ]]>
+        </node>
+
+        <node id="s2" name="选择脚本" type="switch_script" language="groovy">
+            <![CDATA[
+                def count = defaultContext.getData("count");
+                if(count > 100){
+                    return "a";
+                }else{
+                    return "b";
+                }
+            ]]>
+        </node>
+
+        <node id="s3" name="条件脚本" type="if_script" language="groovy">
+            <![CDATA[
+                return false;
+            ]]>
+        </node>
+
+        <node id="s4" name="数值循环脚本" type="for_script" language="groovy">
+            <![CDATA[
+                //此处可以用来获取你的循环次数，可以调用java对象来获取，这里演示直接返回循环次数
+                return 10;
+            ]]>
+        </node>
+
+        <node id="s5" name="条件循环脚本" type="while_script" language="groovy">
+            <![CDATA[
+                //此处用来获取什么时候继续循环的标识，可以调用java对象来获取，这里只是演示
+                def flag = yourJavaBean.getFlag();
+                return flag;
+            ]]>
+        </node>
+
+        <node id="s6" name="退出循环脚本" type="break_script" language="groovy">
+            <![CDATA[
+                //此处用来获取什么时候退出循环的标识，可以调用java对象来获取，这里只是演示
+                def breakFlag = yourJavaBean.getFlag();
+                return flag;
+            ]]>
+        </node>
+    </nodes>
+
+    <!--根据表达式的id进行选择-->
+<!--    <chain name="chain3">-->
+<!--        SWITCH(a).to(b, WHEN(c,d).id("w1"));-->
+<!--    </chain>-->
+
+    <!--根据tag进行选择-->
+<!--    <chain name="chain4">-->
+<!--        SWITCH(a).to(-->
+<!--        b.tag("cat"),-->
+<!--        c.tag("dog")-->
+<!--        );-->
+<!--    </chain>-->
+
+
+
+</flow>
