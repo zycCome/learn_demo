@@ -1,8 +1,8 @@
 elasticsearch:
-  host: xxx
+  host: 113.31.119.47
   port: 9200
-  userName: xxx
-  passWord:  xxx
+  userName: elastic
+  passWord: elastic123
 spring:
   # 应用名称
   application:
@@ -15,7 +15,7 @@ spring:
   elasticsearch:
     rest:
       # 定位ES的位置
-      uris: http:/xxx:9200
+      uris: http:/113.31.119.47:9200
 mybatis:
   type-aliases-package: com.thr.elastisearch.domain
   mapper-locations: classpath:mapper/*.xml

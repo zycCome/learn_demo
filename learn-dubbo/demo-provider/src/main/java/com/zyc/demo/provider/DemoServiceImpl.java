@@ -3,6 +3,7 @@ package com.zyc.demo.provider;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.zyc.demo.api.DemoService;
 import com.zyc.demo.api.User;
+import org.apache.dubbo.config.annotation.DubboService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +12,8 @@ import java.util.Date;
  * @author zhuyc
  * @date 2022/04/22 11:12
  **/
+
+@DubboService
 public class DemoServiceImpl implements DemoService {
     @Override
     public String sayHello(String name) {

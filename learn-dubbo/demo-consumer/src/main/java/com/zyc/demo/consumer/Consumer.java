@@ -19,7 +19,6 @@ package com.zyc.demo.consumer;
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
-import com.alibaba.dubbo.config.utils.ReferenceConfigCache;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.zyc.demo.api.DemoService;
@@ -46,8 +45,7 @@ public class Consumer {
         // 声明为泛化接口
         reference.setGeneric(true);
 
-        ReferenceConfigCache cache = ReferenceConfigCache.getCache();
-        GenericService genericService = cache.get(reference);
+        GenericService genericService = reference.get();
         while (true) {
             int i = 0;
             try {

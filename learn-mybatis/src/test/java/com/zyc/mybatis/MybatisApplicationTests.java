@@ -43,7 +43,13 @@ public class MybatisApplicationTests {
          * 调用对应方法时，会交给内部SqlSessionInterceptor对象，该对象会尝试从Spring的事务管理器中获取当前线程已经持有的SqlSession。如果获取失败，则创建一个新的
          */
         List<User> list = userMapper.list();
+        // 查询结果为空也会缓存空集合
         System.out.println(list);
+        System.out.println("------------");
+        List<User> list2 = userMapper.list();
+        System.out.println(list);
+        // 肯定不一样，因为已经是两个session了
+        System.out.println(list2 == list);
     }
 
 

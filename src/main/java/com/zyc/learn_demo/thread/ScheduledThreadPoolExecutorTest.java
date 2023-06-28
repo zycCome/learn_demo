@@ -10,6 +10,18 @@ import java.util.concurrent.*;
  **/
 public class ScheduledThreadPoolExecutorTest {
 
+    @Test
+    public void  test() {
+        int COUNT_BITS = Integer.SIZE - 3;
+        int CAPACITY   = (1 << COUNT_BITS) - 1;
+        int a = -536870911;
+        int result = a& ~CAPACITY;
+
+        int running = -1 << COUNT_BITS;
+        int count = a & CAPACITY;
+        System.out.println(result);
+    }
+
 
     @Test
     public void test1() throws InterruptedException {

@@ -22,7 +22,8 @@ public class MapTest {
         map.put("b1","b");
         map.put("b2","b");
         map.put("b3","b");
-
+        map.keySet();
+        map.values();
         System.out.println(map.get("a"));
         System.out.println(map.get("d"));
 

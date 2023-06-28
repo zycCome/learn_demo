@@ -20,6 +20,7 @@
         <module>es-learn</module>
         <module>learn-kafka</module>
         <module>learn-demos/webclient</module>
+        <module>jdk-feature</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -34,6 +35,8 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>1.8</java.version>
+        <dubbo.version>3.2.0</dubbo.version>
+        <zookeeper.version>4.0.0</zookeeper.version>
     </properties>
     <dependencies>
         <dependency>
