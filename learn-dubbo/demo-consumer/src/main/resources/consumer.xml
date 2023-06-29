@@ -24,17 +24,17 @@
     <!-- consumer's application name, used for tracing dependency relationship (not a matching criterion),
     don't set it same as provider -->
     <dubbo:application name="demo-consumer">
-        <dubbo:parameter key="qos.port" value="33333"></dubbo:parameter>
+<!--        <dubbo:parameter key="qos.port" value="33333"></dubbo:parameter>-->
     </dubbo:application>
 
     <!-- use multicast registry center to discover service -->
-<!--    <dubbo:registry address="zookeeper://zhuyc.top:12181"/>-->
-    <dubbo:registry address="192.168.4.91:2181,192.168.4.92:2181,192.168.4.93:2181"  protocol="zookeeper"/>
+    <dubbo:registry address="zookeeper://zhuyc.top:12181"/>
+<!--    <dubbo:registry address="192.168.4.91:2181,192.168.4.92:2181,192.168.4.93:2181"  protocol="zookeeper"/>-->
 
     <!-- generate proxy for the remote service, then demoService can be used in the same way as the
     local regular interface -->
-    <dubbo:reference id="demoService" check="false" interface="com.zyc.demo.api.DemoService"/>
+    <dubbo:reference id="demoService" check="true" interface="com.zyc.demo.api.DemoService"/>
 
-    <dubbo:consumer connections="5"></dubbo:consumer>
+<!--    <dubbo:consumer connections="5"></dubbo:consumer>-->
 
 </beans>

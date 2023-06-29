@@ -23,6 +23,7 @@
         <module>learn-lite-flow</module>
         <module>learn-beancopy</module>
         <module>hign-jdk-feature</module>
+        <module>learn-dubbo3</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -69,6 +70,12 @@
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <version>2.6.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
 
 
