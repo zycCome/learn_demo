@@ -33,7 +33,7 @@ public class AlwaysApplication {
     public static void main(String[] args) throws IOException {
         ReferenceConfig<GreetingsService> reference = new ReferenceConfig<>();
         reference.setInterface(GreetingsService.class);
-        // 证明version没有默认值
+        // 证明version没有默认值,如果provider没有配置version，*会报错，这算bug吧？
         reference.setVersion("*");
 
         DubboBootstrap.getInstance()
@@ -49,7 +49,7 @@ public class AlwaysApplication {
                 String message2 = service.sayHi2("dubbo");
                 System.out.println(new Date() + " Receive result ======> " + message);
                 System.out.println(new Date() + " Receive result ======> " + message2);
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             } catch (Throwable t) {
                 t.printStackTrace();
             }

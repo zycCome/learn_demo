@@ -32,6 +32,7 @@ public class Application {
         ServiceConfig<GreetingsService> service = new ServiceConfig<>();
         service.setInterface(GreetingsService.class);
         service.setRef(new GreetingsServiceImpl());
+        service.setVersion("34.0.0");
 
         DubboBootstrap.getInstance()
                 .application("first-dubbo-provider")

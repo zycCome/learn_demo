@@ -16,6 +16,6 @@
         <appender-ref ref="console"/>
     </root>
     <logger name="org.apache.http.wire" additivity="false" level = "INFO" >
-        <appender-ref ref="CONSOLE-APPENDER" />
+        <appender-ref ref="console" />
     </logger>
 </configuration>
