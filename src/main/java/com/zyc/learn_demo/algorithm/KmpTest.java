@@ -7,6 +7,7 @@ import org.junit.Test;
  * @author zhuyc
  * @date 2022/04/06 15:48
  **/
+@Deprecated
 public class KmpTest {
 
     /**

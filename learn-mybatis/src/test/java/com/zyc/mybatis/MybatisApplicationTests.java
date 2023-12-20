@@ -14,7 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * @author zhuyc
@@ -105,6 +108,52 @@ public class MybatisApplicationTests {
 
         System.out.println("递减主键插入:"+(System.currentTimeMillis()-startTime));
     }
+
+
+    /**
+     * java 东11区，MySQL 东8区，serverTimezone=Asia/Shanghai 也是东8区
+     *
+     * 插入Date类型和LocalDateTime类型，数据库都是dateTime类型
+     *
+     * 结果：
+     * 实际时间 18：00（东8区）
+     * 插入前：date和localDateTime都是 21：00
+     * 数据库中：date：18：00   localDateTime：21：00  （因为LocalDateTime没有时区信息，所以没有转换）（所以转换的判断标准是字段类型！！！Date就会转）
+     * 查询后：date和localDateTime都是 21：00  （因为LocalDateTime没有时区信息，所以没有转换，Date有时区信息，转换了？）
+     *
+     * ------
+     * 如果serverTimezone不指定，则date和localDateTime在数据库中也是21：00，没有发生时区转换（难道不取的情况下，认为数据库和本地一致？？？）
+     * 返回的数据和插入的一致这点放心
+     *
+     *
+     * @throws IOException
+     */
+    @Test
+    public void testTimeZone1() throws IOException {
+        TimeZone timeZone = TimeZone.getTimeZone("Australia/Sydney");
+        TimeZone.setDefault(timeZone);
+
+        Date date = new Date();
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println("date:"+date+"   localDateTime:"+localDateTime);
+        UserRandomKey2 userKeyAuto = UserRandomKey2.builder()
+                .id(4L)
+                .userId(1L)
+                .userName("xiaoming")
+                .address("金鹰")
+                .city("南京")
+                .email("qq@qq.com")
+                .sex(1)
+                .state(1)
+                .date(date)
+                .localDateTime(localDateTime)
+                .build();
+        userRandomKeyMapper2.insert(userKeyAuto);
+
+        UserRandomKey2 userRandomKey = userRandomKeyMapper2.selectByPrimaryKey(4L);
+        System.out.println(userRandomKey);
+    }
+
 
 
 }

@@ -1,15 +1,16 @@
-package com.hanmc.example.modulardemo.common;
+package com.hanmc.example.modulardemo.open;
 
 /**
  * @Description
  * @Author zilu
- * @Date 2023/5/25 5:56 PM
+ * @Date 2023/12/4 11:45
  * @Version 1.0.0
  **/
-public class ApiResponse {
+public class OpenApiResponse {
 
     public int public_code;
 
     private int private_name;
+
 
 }
