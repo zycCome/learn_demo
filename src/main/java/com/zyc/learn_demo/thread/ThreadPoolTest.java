@@ -214,6 +214,7 @@ public class ThreadPoolTest {
                 public void run() {
                     try {
                         synchronousQueue.put("push object:" + j);
+                        System.out.println("thread1:"+j + " consumer:"+j);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Map;
+
 /**
  * @Description TODO
  * @Author zilu
@@ -35,4 +37,9 @@ public class HelloController {
         return "data";
     }
 
+    @PostMapping("/abc/test")
+    public String test(@RequestBody Map map) {
+        System.out.println(JSONUtil.toJsonStr(map));
+        return "data";
+    }
 }

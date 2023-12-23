@@ -3,6 +3,8 @@ package com.zyc.mybatis.pojo;
 import lombok.Builder;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 
@@ -49,6 +51,10 @@ public class UserRandomKey2 implements Serializable {
      * 
      */
     private Integer state;
+
+    private Date date;
+
+    private LocalDateTime localDateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -164,6 +170,22 @@ public class UserRandomKey2 implements Serializable {
         this.state = state;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -203,20 +225,17 @@ public class UserRandomKey2 implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", userId=").append(userId);
-        sb.append(", userName=").append(userName);
-        sb.append(", sex=").append(sex);
-        sb.append(", address=").append(address);
-        sb.append(", city=").append(city);
-        sb.append(", email=").append(email);
-        sb.append(", state=").append(state);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
+        return "UserRandomKey2{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", sex=" + sex +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", email='" + email + '\'' +
+                ", state=" + state +
+                ", date=" + date +
+                ", localDateTime=" + localDateTime +
+                '}';
     }
 }

@@ -1,7 +1,6 @@
 package com.zyc.mybatis.mapper;
 
 
-import com.zyc.mybatis.pojo.UserRandomKey;
 import com.zyc.mybatis.pojo.UserRandomKey2;
 
 /**
@@ -18,7 +17,7 @@ public interface UserRandomKeyMapper2 {
 
     int insertSelective(UserRandomKey2 record);
 
-    UserRandomKey selectByPrimaryKey(Long id);
+    UserRandomKey2 selectByPrimaryKey(Long id);
 
     int updateByPrimaryKeySelective(UserRandomKey2 record);
 

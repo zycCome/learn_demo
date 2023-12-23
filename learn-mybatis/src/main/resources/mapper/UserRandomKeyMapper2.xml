@@ -13,12 +13,14 @@
             <result property="city" column="city" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="state" column="state" jdbcType="INTEGER"/>
+            <result property="date" column="date" jdbcType="TIMESTAMP"/>
+            <result property="localDateTime" column="local_date_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,user_id,user_name,
         sex,address,city,
-        email,state
+        email,state,date,local_date_time
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -36,10 +38,10 @@
         insert into user_random_key2
         ( id,user_id,user_name
         ,sex,address,city
-        ,email,state)
+        ,email,state,date,local_date_time)
         values (#{id,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},#{userName,jdbcType=VARCHAR}
         ,#{sex,jdbcType=INTEGER},#{address,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}
-        ,#{email,jdbcType=VARCHAR},#{state,jdbcType=INTEGER})
+        ,#{email,jdbcType=VARCHAR},#{state,jdbcType=INTEGER},#{date},#{localDateTime})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.zyc.mybatis.pojo.UserRandomKey2" useGeneratedKeys="true">
         insert into user_random_key2
