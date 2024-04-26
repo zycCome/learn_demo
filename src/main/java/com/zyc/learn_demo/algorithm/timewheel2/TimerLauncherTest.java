@@ -9,7 +9,7 @@ public class TimerLauncherTest {
         TimerTask timerTask = new TimerTask("a",30);
         timer.add(timerTask);
 
-
+        Thread.sleep(50);
         TimerTask timerTask2 = new TimerTask("b",60);
         timer.add(timerTask2);
 

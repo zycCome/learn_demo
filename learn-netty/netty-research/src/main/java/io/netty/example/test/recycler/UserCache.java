@@ -64,7 +64,7 @@ public class UserCache {
      * 其他线程回收，debug回收逻辑
      */
     @Test
-    public void test1() {
+    public void test1() throws InterruptedException {
 
         User user1 = userRecycler.get(); // 1、从对象池获取 User 对象
         user1.setName("hello"); // 2、设置 User 对象的属性
@@ -91,6 +91,7 @@ public class UserCache {
         } .start();
 
         System.out.println("end");
+        Thread.sleep(1111111111);
 
     }
 

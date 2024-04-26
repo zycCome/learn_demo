@@ -81,6 +81,7 @@ public class CounterSildeWindowLimiter {
 
     //测试
     public static void main(String[] args) throws InterruptedException {
+        System.out.println(args);
         //每秒20个请求
         int limit = 100;
         CounterSildeWindowLimiter counterSildeWindowLimiter = new CounterSildeWindowLimiter(1000,limit,10);
