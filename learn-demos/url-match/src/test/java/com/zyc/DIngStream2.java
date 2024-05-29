@@ -18,7 +18,9 @@ public class DIngStream2 {
     public static void main(String[] args) throws Exception {
         OpenDingTalkStreamClientBuilder
                 .custom()
-                .credential(new AuthClientCredential("dingnbz5f0hd5ei6taos", "9Kw8lbDkNBsgTuD3yadkhoqdQASjZMJWwA0ip1CIE81qJaLOJrmoEQ_Iy9-vPC_o"))
+//                .credential(new AuthClientCredential("dingnbz5f0hd5ei6taos", "9Kw8lbDkNBsgTuD3yadkhoqdQASjZMJWwA0ip1CIE81qJaLOJrmoEQ_Iy9-vPC_o"))
+                .credential(new AuthClientCredential("ding6fdhxdwb0ufs3cgy", "uEaZHPNK9XpXIYMRQR7b4x7-O-KXkfcETw4ltrG62ZZNEAR3EHUJJN-fGGTrMaqf"))
+
                 //注册事件监听
                 .registerAllEventListener(new GenericEventListener() {
                     public EventAckStatus onEvent(GenericOpenDingTalkEvent event) {
@@ -46,6 +48,8 @@ public class DIngStream2 {
 
     private static void process(JSONObject bizData) {
         // 测试可得，多个stream只有一个可用
+        // 开发环境支持 一个机器上启动多个stream
+        // 多个连接时，最先建立的连接有效；第一个连接断开后，第二个建立的连接会自动生效。很棒！！
         System.out.println(bizData);
     }
 

@@ -45,7 +45,7 @@ public class DIngStream {
     }
 
     private static void process(JSONObject bizData) {
-
+        // 重连后会推送断连期间的事件
         System.out.println(bizData);
     }
 
