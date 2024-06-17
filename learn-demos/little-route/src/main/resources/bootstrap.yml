@@ -9,18 +9,18 @@ spring:
     nacos:
       discovery:
         #必须配置ip地址
-        server-addr: xx:18848
+        server-addr: zhuyc.top:18848
         # 将自己的服务注册到注册中心
         register-enabled: true
         #namespace: all-register-service-namespace
-        username: xx
-        password: xx
+        username: nacos
+        password: 654321
       # 配置中心新增部分
       config:
-        server-addr: xx:18848
+        server-addr: zhuyc.top:18848
         file-extension: yaml
-        username: xx
-        password: xx
+        username: nacos
+        password: 654321
   profiles:
     active: dev
 # 新加属性，作为配置测试

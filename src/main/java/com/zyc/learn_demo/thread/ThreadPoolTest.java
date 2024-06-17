@@ -1,6 +1,7 @@
 package com.zyc.learn_demo.thread;
 
 import cn.hutool.core.thread.ThreadFactoryBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.*;
@@ -10,6 +11,7 @@ import java.util.concurrent.locks.LockSupport;
  * @author zhuyc
  * @date 2021/06/21 07:19
  **/
+@Slf4j
 public class ThreadPoolTest {
 
     @Test
@@ -87,6 +89,30 @@ public class ThreadPoolTest {
 
         System.out.println(111);
 
+    }
+
+
+    /**
+     * 测试先插入队列还是先创建core-max之间的线程
+     */
+    @Test
+    public void testMaxOrQueue() throws InterruptedException {
+        ThreadPoolExecutor eventThreadPool = new ThreadPoolExecutor(1, 10, 30, TimeUnit.SECONDS,
+                new SynchronousQueue<>(), new ThreadFactoryBuilder().setNamePrefix("workWx-event-thread-").build(), new CustomRejectedExecutionHandler());
+        for (int i = 0; i < 12; i++) {
+            int j = i;
+            eventThreadPool.submit(() -> {
+
+                log.info(Thread.currentThread().getName() + " start "+j);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                log.info(Thread.currentThread().getName() + " end "+j);
+            });
+        }
+        Thread.sleep(10000);
     }
 
 
