@@ -6,9 +6,11 @@ package com.zyc.learn_demo.algorithm.timewheel2;
  * @Date 2023/6/29 11:31 AM
  * @Version 1.0.0
  **/
+import cn.hutool.core.date.DateUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
 import java.util.concurrent.DelayQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,11 +70,14 @@ public class TimerLauncher implements Timer {
         }
     }
 
+
     @Override
     public synchronized void add(TimerTask timerTask) {
-        log.info("=======添加任务开始====task:{}", timerTask.getDesc());
+
         // 新建了TimerTaskEntry，因此TimerTaskEntry理论上不会复用
         TimerTaskEntry entry = new TimerTaskEntry(timerTask, timerTask.getDelayMs() + System.currentTimeMillis());
+        log.info("=======添加任务开始====task:{},预期执行时间:{}", timerTask.getDesc(),DateUtil.format(new Date(entry.getExpireMs()),"yyyy-MM-dd HH:mm:ss.SSS"));
+
         timerTask.setTimerTaskEntry(entry);
         addTimerTaskEntry(entry);
     }

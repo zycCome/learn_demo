@@ -88,4 +88,44 @@ public class ConditionTest {
         Thread.sleep(200*1000);
 
     }
+
+
+    @Test
+    public void testConditionFirstSignal() throws InterruptedException {
+
+        ReentrantLock lock = new ReentrantLock();
+        Condition condition = lock.newCondition();
+
+        Thread.sleep(1000);
+        new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println("before signal");
+                condition.signal();
+                System.out.println("after signal");
+            } finally {
+                lock.unlock();
+            }
+
+        }).start();
+
+        Thread.sleep(1000);
+        Thread thread = new Thread(() -> {
+            lock.lock();
+            try {
+                System.out.println("before await");
+                condition.await();
+                System.out.println("after await");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                lock.unlock();
+            }
+
+        });
+        thread.start();
+
+        Thread.sleep(200*1000);
+
+    }
 }

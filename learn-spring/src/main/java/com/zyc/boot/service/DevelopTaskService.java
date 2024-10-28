@@ -2,6 +2,7 @@ package com.zyc.boot.service;
 
 import com.zyc.boot.pojo.po.DevelopTask;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * <p>
@@ -20,4 +21,5 @@ public interface DevelopTaskService extends IService<DevelopTask> {
     void insert2Table2(boolean throwE);
 
     void notPublicTransaction();
+
 }

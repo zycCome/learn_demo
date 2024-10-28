@@ -5,6 +5,8 @@ public class TimerLauncherTest {
 
 
     public static void main(String[] args) throws InterruptedException {
+
+
         Timer timer = new TimerLauncher();
         TimerTask timerTask = new TimerTask("a",30);
         timer.add(timerTask);

@@ -8,6 +8,8 @@ import com.zyc.boot.service.DevelopTaskService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,4 +158,12 @@ public class DevelopTaskServiceImpl extends ServiceImpl<DevelopTaskMapper, Devel
 
         log.info("[insert2Table] end");
     }
+
+    @Scheduled(initialDelay = 5000,fixedDelay = 5000)
+    public void scheduleTest() throws InterruptedException {
+        log.info("scheduleTest:" + Thread.currentThread().getName());
+        developTaskProjectService.asyncTest2();
+        Thread.sleep(2000);
+    }
+
 }

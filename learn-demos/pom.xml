@@ -18,7 +18,7 @@
         <module>agent</module>
         <module>agent-app</module>
         <module>protopuf-test</module>
-        <module>i18n</module>
+<!--        <module>i18n</module>-->
     </modules>
 
 

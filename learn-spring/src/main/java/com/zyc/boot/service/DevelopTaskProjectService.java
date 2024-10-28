@@ -2,6 +2,7 @@ package com.zyc.boot.service;
 
 import com.zyc.boot.pojo.po.DevelopTaskProject;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.scheduling.annotation.Async;
 
 /**
  * <p>
@@ -17,4 +18,6 @@ public interface DevelopTaskProjectService extends IService<DevelopTaskProject> 
 
     void saveOne1(DevelopTaskProject developTaskProject, boolean throwE);
 
+
+    void asyncTest2();
 }

@@ -118,13 +118,14 @@ public class ThreadPoolTest {
 
     /**
      * 需要确认两个问题
-     * 1. 先park后interrupt是否不会阻塞
-     * 2. 先interrupt后park是否不会阻塞
+     * 1. 先park后interrupt是否不会阻塞：interrupt会唤醒park
+     * 2. 先interrupt后park是否不会阻塞:interrupt会唤醒park
      */
     @Test
-    public void testInterruptAndPark() {
+    public void testInterruptAndPark() throws InterruptedException {
         Thread thread = new Thread(() -> {
             System.out.println("1111");
+            Thread.currentThread().interrupt();
             LockSupport.park();
             System.out.println("2222"+Thread.currentThread().isInterrupted());
             System.out.println("3333"+Thread.interrupted());
@@ -132,11 +133,12 @@ public class ThreadPoolTest {
 
         });
         thread.start();
-
-        thread.interrupt();
+//        Thread.sleep(1000);
+//        thread.interrupt();
 
         System.out.println("main1");
         System.out.println("main2");
+        Thread.sleep(100000);
 
     }
 

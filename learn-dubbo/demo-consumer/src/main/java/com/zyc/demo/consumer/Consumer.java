@@ -71,7 +71,7 @@ public class Consumer {
             try {
                 Thread.sleep(1000);
                 // call remote method
-                String hello = demoService.sayHello("world");
+                String hello = demoService.sayHello3("world");
                 // get result
                 System.out.println(hello);
 

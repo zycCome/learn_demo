@@ -2,6 +2,7 @@ package com.zyc.demo.provider;
 
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.zyc.demo.api.DemoService;
+import com.zyc.demo.api.DemoService2;
 import com.zyc.demo.api.User;
 import org.apache.dubbo.config.annotation.DubboService;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  **/
 
 @DubboService
-public class DemoServiceImpl implements DemoService {
+public class DemoServiceImpl2 implements DemoService2 {
     @Override
     public String sayHello(String name) {
         System.out.println("[" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + "] Hello " + name + ", request from consumer: " + RpcContext.getContext().getRemoteAddress());
@@ -38,11 +39,4 @@ public class DemoServiceImpl implements DemoService {
         user.setName("test");
         return user;
     }
-
-    @Override
-    public String sayHello3(String name) {
-        return null;
-    }
-
-
 }

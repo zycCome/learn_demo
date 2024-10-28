@@ -1,8 +1,10 @@
 package com.zyc.learn_demo.algorithm.timewheel2;
 
+import cn.hutool.core.date.DateUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
 import java.util.concurrent.DelayQueue;
 
 /**
@@ -48,13 +50,13 @@ public class TimeWheel {
         this.tickMs = tickMs;
         this.wheelSize = wheelSize;
         this.interval = tickMs * wheelSize;
-        this.currentTime = currentTime;
         this.buckets = new TimerTaskList[wheelSize];
         /**
          * 目的：保持整数倍，减去余数
          * 比如当前 1688006789928，tickMs是100ms，则currentTime为1688006789900ms。
          */
         this.currentTime = currentTime - (currentTime % tickMs);
+        log.info("currentTime:{}", DateUtil.format(new Date(this.currentTime),"yyyy-MM-dd HH:mm:ss.SSS"));
         this.delayQueue = delayQueue;
         for (int i = 0; i < wheelSize; i++) {
             // 初始化格子
@@ -72,6 +74,7 @@ public class TimeWheel {
 //        log.info("tickMs + currentTime:{}",tickMs + currentTime);
         if (expiration < tickMs + currentTime) {
             // 定时任务到期，注意判断的是当前槽的结束时间
+            log.info("============={}任务马上执行,过期时间:{},currentTime:{}",entry.getTimerTask().getDesc(),DateUtil.format(new Date(entry.getExpireMs()),"yyyy-MM-dd HH:mm:ss.SSS"),currentTime);
             return false;
         } else if (expiration < currentTime + interval) {
             // 扔进当前时间轮的某个槽里,只有时间大于某个槽,才会放进去
@@ -80,6 +83,8 @@ public class TimeWheel {
 //            log.info("expiration:{},virtualId:{}",expiration,virtualId);
             TimerTaskList bucket = buckets[index];
             bucket.addTask(entry);
+
+            log.info("============={}任务加到队列,过期时间:{}",entry.getTimerTask().getDesc(),DateUtil.format(new Date(entry.getExpireMs()),"yyyy-MM-dd HH:mm:ss.SSS"));
             // 设置bucket 过期时间
             /**
              * 比如这里virtualId最小是1，因此对应槽会在 1个tickMs时执行（不是相对时间，而是绝对时间）。但不是非常精确的！！！
@@ -96,10 +101,11 @@ public class TimeWheel {
                     log.info("repeat insert!!!");
                 }
 //                log.info("bucket index:{}",index);
+                log.info("bucket 过期时间:{}",DateUtil.format(new Date(bucket.getExpiration()),"yyyy-MM-dd HH:mm:ss.SSS"));
                 delayQueue.offer(bucket);
                 return true;
             } else {
-//                log.info("setExpiration false");
+                log.info("setExpiration false");
                 // fix bug 1：之前这里不返回ture，导致最终返回false，导致任务即添加到了队列里面（未来执行），又会自动执行一次
                 return true;
             }
@@ -142,6 +148,8 @@ public class TimeWheel {
         /**
          * fixbug3：
          * 等于时也应该推进，因为范围是前闭后开。因此等于上限时也要推进指针
+         *
+         * 如果某个list的过期时间已经大于当前时间轮currentTime对应的格子了，则马上推进，不会等等整个轮子时间都结束再推进
          */
         if (timestamp >= currentTime + tickMs) {
 //        if (timestamp > currentTime + tickMs) {

@@ -1,5 +1,8 @@
 package com.zyc.learn_demo.java8;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author zhuyc
  * @date 2022/05/05 17:07
@@ -34,8 +37,36 @@ public class TestHello {
 
     int b = 3;
 
+
+    public void test4() {
+        int a = 0;
+        {
+            int b = 0;
+            b = a + 1;
+        }
+        int c = a + 1;
+    }
     public static void main(String[] args) {
+        Map<String,Integer> map = new HashMap<String,Integer>(){};
+        System.out.println(map);
+        System.out.println("111");
+        int a = 12;
+        int b = 13;
+        String s = "111";
         new TestHello();
+        long l = 12L;
+
+        int c = a+b;
+        Object o = new Object();
+        s = "222";
+
+        s = s+l;
+
+        l = Long.parseLong("222");
+        System.out.println(l);
+
+
+
     }
 
 }
