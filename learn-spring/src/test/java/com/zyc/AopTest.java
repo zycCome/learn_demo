@@ -183,4 +183,23 @@ public class AopTest {
 
     }
 
+
+    /**
+     * 1. TransactionSynchronizationManager.registerSynchronization 是注册到当前事务中的，事务结束会清空Synchronization集合
+     */
+    @Test
+    public void  testTransactionSynchronization() {
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MyConfigOfAOP.class);
+
+        UserService userService = applicationContext.getBean(UserService.class);
+
+
+        userService.insertWithTransactionSynchronization();
+        // 多次注册不会重复
+//        userService.insertWithTransactionSynchronization();
+
+
+        applicationContext.close();
+    }
+
 }

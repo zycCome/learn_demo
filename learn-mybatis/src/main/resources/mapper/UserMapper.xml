@@ -7,4 +7,7 @@
     <select id="list" resultType="com.zyc.mybatis.pojo.User">
         select * from tbl_user
     </select>
+    <select id="list2" resultType="com.zyc.mybatis.pojo.User">
+        select * from tbl_user
+    </select>
 </mapper>

@@ -6,6 +6,7 @@ import com.zyc.mybatis.mapper.UserRandomKeyMapper2;
 import com.zyc.mybatis.pojo.User;
 import com.zyc.mybatis.pojo.UserRandomKey;
 import com.zyc.mybatis.pojo.UserRandomKey2;
+import com.zyc.mybatis.service.UserService;
 import com.zyc.mybatis.util.SnowflakeIdWorker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +30,9 @@ public class MybatisApplicationTests {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     private SnowflakeIdWorker idWorker = new SnowflakeIdWorker(0);
 
@@ -54,6 +58,12 @@ public class MybatisApplicationTests {
         // 肯定不一样，因为已经是两个session了
         System.out.println(list2 == list);
     }
+
+    @Test
+    public void cacheInTransactionTest() {
+        userService.cacheInTransactionTest();
+    }
+
 
 
     // 第一次 1w 49066

@@ -15,6 +15,6 @@ public class DependenceDemo {
 //    public DependenceDemo(@Autowired Demo demo) {
     // 只能获取到接口
     public DependenceDemo(@Autowired DemoI demo) {
-        demo.printHello();
+//        demo.printHello();
     }
 }

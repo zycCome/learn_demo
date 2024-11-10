@@ -1,11 +1,14 @@
 package com.zyc.simple;
 
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.junit.jupiter.api.Test;
 import org.springframework.kafka.support.SendResult;
 
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 /**
@@ -19,10 +22,10 @@ public class ProducerTest {
     @Test
     public void test1() {
         Properties kafkaProps = new Properties();
-        kafkaProps.put("bootstrap.servers", "192.168.4.96:9092");
+        kafkaProps.put("bootstrap.servers", "172.20.45.45:9092");
         kafkaProps.put("producer.type", "async");
         kafkaProps.put("compression.type", "gzip");
-        kafkaProps.put("retries", "3");
+//        kafkaProps.put("retries", "3");
         kafkaProps.put("linger.ms", "100");
         //向kafka集群发送消息,除了消息值本身,还包括key信息,key信息用于消息在partition之间均匀分布。
         //发送消息的key,类型为String,使用String类型的序列化器
@@ -31,6 +34,22 @@ public class ProducerTest {
         kafkaProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         //创建一个KafkaProducer对象，传入上面创建的Properties对象
         KafkaProducer<Integer, String> producer = new KafkaProducer<>(kafkaProps);
+
+        try {
+            for (int i = 0; i < 5; i++) {
+                sendMessage(producer,"topic-zyc-1",1,"{\"age\":"+i+"}");
+            }
+
+              Thread.sleep(10000);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        producer.close();
+    }
+
+    public void sendMessage( KafkaProducer<Integer, String> producer,String topic,Integer key, String value) throws ExecutionException, InterruptedException {
+        ProducerRecord producerRecord = new ProducerRecord(topic,key,value);
         /**
          * 使用ProducerRecord<String, String>(String topic, String key, String value)构造函数创建消息对象
          * 构造函数接受三个参数：
@@ -38,23 +57,33 @@ public class ProducerTest {
          * key--告诉kafkaProducer，所发送消息的key值，注意：key值类型需与前面设置的key.serializer值匹配
          * value--告诉kafkaProducer，所发送消息的value值，即消息内容。注意：value值类型需与前面设置的value.serializer值匹配
          */
-        try {
-            ProducerRecord producerRecord = new ProducerRecord("WORK_WX_EVENT_TOPIC", 1, "{\"type\":1,\"deviceSn\":\"84E0F42710011501\",\"timeStamp\":1672276299001,\"admitCode\":\"07D5220906130924W21FVSDS\",\"organizeId\":702,\"userId\":2005,\"appId\":20050055,\"organizeCode\":\"07D52D551B9C724C0895\"}");
+        boolean isResult = false;
+        if (isResult) {
+            // 同步发送
             Future<SendResult<Integer, String>> listenableFuture = producer.send(producerRecord);
-            boolean isResult = true;
-            if (isResult) {
-                // 同步发送
-                listenableFuture.get();
-//                listenableFuture.addCallback((SuccessCallback) -> {
-//                    System.out.println("success");
-//                }, (FailureCallback) -> {
-//                    FailureCallback.printStackTrace();
-//                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            listenableFuture.get();
+        } else {
+            producer.send(producerRecord,new Callback() {
 
+                /**
+                 * 当设置了retries参数后，回调是每次失败都调用，还是最后一次失败时调用？结果：最后一次失败时调用
+                 * retries默认值时，会一直重试吗？使用iptables模拟断网环境。结果：不会一直重试
+                 * @param metadata
+                 * @param exception
+                 */
+                @Override
+                public void onCompletion(RecordMetadata metadata, Exception exception) {
+                    if (exception == null) {
+                        System.out.println("Sent message: " + producerRecord + ", offset: " + metadata.offset());
+                    } else {
+                        // 这里重新发送消息
+                        // 或者记录日志
+                        System.out.println("Sent message error:"+ exception.getMessage());
+                        exception.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
 }
