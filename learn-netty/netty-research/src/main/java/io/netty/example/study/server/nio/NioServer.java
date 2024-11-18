@@ -73,7 +73,8 @@ public class NioServer {
 
         // 客户端请求连接事件
         if (key.isAcceptable()) {
-            handlerAccept(key);
+//            handlerAccept(key);
+            System.out.println("accept");
             // 获得了可读的事件
         } else if (key.isReadable()) {
             handelerRead(key);

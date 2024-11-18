@@ -13,6 +13,7 @@ import io.netty.example.study.client.codec.OrderProtocolEncoder;
 import io.netty.example.study.common.RequestMessage;
 import io.netty.example.study.common.order.OrderOperation;
 import io.netty.example.study.util.IdUtil;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
@@ -38,8 +39,8 @@ public class Client {
                 ChannelPipeline pipeline = ch.pipeline();
                 //下面handler的顺序是有规则的，如果粗了，可能不能正常工作了。
                 //注意这里类的packgae需要是客户端的。如果搞错了，就不能正常收发消息，但奇怪的是netty也不报错！！！
-                pipeline.addLast(new OrderFrameDecoder());
-                pipeline.addLast(new OrderFrameEncoder());
+                pipeline.addLast(new FixedLengthFrameDecoder(20));
+                pipeline.addLast(new FixedLengthFrameDecoder(20));
                 pipeline.addLast(new OrderProtocolDecoder());
                 pipeline.addLast(new OrderProtocolEncoder());
 
@@ -56,6 +57,7 @@ public class Client {
         channelFuture.channel().writeAndFlush(requestMessage);
 
         channelFuture.channel().closeFuture().get();
+        System.out.println("已经关闭");
 
     }
 }

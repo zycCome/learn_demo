@@ -42,4 +42,9 @@ public class OrderServerProcessHandler extends SimpleChannelInboundHandler<Reque
         System.out.println("channelInactive");
         super.channelInactive(ctx);
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        super.exceptionCaught(ctx, cause);
+    }
 }

@@ -26,6 +26,7 @@
         <module>hign-jdk-feature</module>
         <module>learn-dubbo3</module>
         <module>learn-demos/redis</module>
+        <module>learn-demos/boot-web</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -10,6 +10,7 @@ import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.util.SocketUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,14 @@ public class HelloController {
     @GetMapping("/hello")
     public String hello() {
         return messageSource.getMessage("user.name", null, LocaleContextHolder.getLocale());
+    }
+
+
+    @PostMapping("/postBody")
+    @ResponseBody
+    public User postBody(@RequestBody User user) {
+        System.out.println(user);
+        return user;
     }
 
 

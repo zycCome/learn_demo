@@ -58,7 +58,14 @@ public class ClientV1 {
         OrderOperation operation = new OrderOperation(1001, "tudou");
         channelFuture.channel().writeAndFlush(operation);
 
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(5000);
+            channelFuture.channel().writeAndFlush(operation);
+        }
+
         channelFuture.channel().closeFuture().get();
+        bootstrap.group().shutdownGracefully();
+        System.out.println("------");
 
     }
 }
