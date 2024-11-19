@@ -1,0 +1,14 @@
+# 这里的配置属性只是基础配置，如需更多功能配置，请自行扩展
+dubbo:
+  application:
+    name: dubbo-consumer
+  registry:
+    address: zookeeper://172.23.148.54:2181
+  protocol:
+    name: dubbo
+    port: 20881
+  consumer:
+    loadbalance: roundrobin
+tag: consumer1
+server:
+  port: 8081
