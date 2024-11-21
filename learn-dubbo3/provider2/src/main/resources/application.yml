@@ -14,7 +14,7 @@ dubbo:
   protocols:
     tri1:
       name: tri
-      port: 50052
+      port: 50053
       host: 192.168.1.6
 #      serialization: protobuf
 #    dubbo1:

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author zyc66
  * @date 2024/11/18 13:24
  **/
-@DubboService(weight = 100)
+//@DubboService(weight = 100)
 @Slf4j
 public class UserServiceImpl implements UserService {
 

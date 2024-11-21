@@ -86,7 +86,7 @@
                 <artifactId>protobuf-maven-plugin</artifactId>
                 <version>0.6.1</version>
                 <configuration>
-<!--                    <outputDirectory>${basedir}/src/main/java</outputDirectory>-->
+                    <outputDirectory>${basedir}/src/main/pp</outputDirectory>
                     <protocArtifact>com.google.protobuf:protoc:3.19.4:exe:${os.detected.classifier}</protocArtifact>
                     <protocPlugins>
                         <protocPlugin>
