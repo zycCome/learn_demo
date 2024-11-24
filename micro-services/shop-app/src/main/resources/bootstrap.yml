@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: shop-app
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.23.148.54:8848
+        username: nacos
+        #读取环境变量的值
+        password: admin996
+        namespace: 187f9490-a14d-4327-9da4-de3e02168833
+        # 注意只有同一个group中的服务才能调用
+        group: a

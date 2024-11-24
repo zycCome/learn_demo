@@ -1,0 +1,33 @@
+server:
+  port: 7000
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: admin996
+    url: jdbc:mysql://172.23.148.54:3306/user-service?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useSSL=false
+  profiles:
+    active: dev
+# 因为feign调试日志是debug级别输出,springboot默认的日志级别是info，所以feign的debug日志级别就不会输出
+# logging.level=debug这样配置是对所有的日志级别进行配置
+# 该场景只需要对feign接口进行debug配置，所以是这样配置logging.level.com.example.order.feign=debug
+logging:
+  level:
+    com.zyc.service.OrderFeignClient: debug
+feign:
+  httpclient:
+    enabled: true
+    max-connections: 200
+    max-connections-per-route: 50
+  client:
+    config:
+      # 全局配置（default 默认就是适用于全部微服务）
+      default:
+        connectTimeout: 100000
+        readTimeout: 100000
+      # 单独配置
+      order-service:
+        connectTimeout: 300000
+        readTimeout: 300000
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
