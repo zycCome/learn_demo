@@ -105,6 +105,7 @@ public class TimeWheel {
                 delayQueue.offer(bucket);
                 return true;
             } else {
+                // 这是为了避免重复插入bucket
                 log.info("setExpiration false");
                 // fix bug 1：之前这里不返回ture，导致最终返回false，导致任务即添加到了队列里面（未来执行），又会自动执行一次
                 return true;

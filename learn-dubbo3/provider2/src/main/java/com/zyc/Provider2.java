@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @EnableDubbo
 @SpringBootApplication
-//@ImportResource(locations = "classpath:provider.xml")// 测试混合使用
+@ImportResource(locations = "classpath:provider.xml")// 测试混合使用
 public class Provider2 {
     public static void main(String[] args) {
         SpringApplication.run(Provider2.class, args);

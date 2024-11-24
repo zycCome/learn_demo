@@ -46,6 +46,13 @@ public class TimerTaskList implements Delayed {
         return expiration.getAndSet(expirationMs) != expirationMs;
     }
 
+    /**
+     * TODO 这里有个问题！
+     * 边界情况下，bucket对应的expiration改变了（比如某个格子本来表示第59s，后来表示第119s），但是第59的任务列表还没消费怎么办？
+     * 这时第119秒的任务也放入了这个bucket。这个问题的本质是时间推进的过程中，bucket列表还没来得及处理，并不是一个干净的列表（有一些脏数据在）
+     * @param entry
+     * @return
+     */
     public boolean addTask(TimerTaskEntry entry) {
         boolean done = false;
         while (!done) {

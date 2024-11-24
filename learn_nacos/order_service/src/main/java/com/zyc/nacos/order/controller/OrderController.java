@@ -29,10 +29,20 @@ public class OrderController {
     @Value("${member.age:}")
     private Integer memberAge;
 
+
+    @Value("${db.message:}")
+    private String dbMessage;
+
+    @Value("${log.message:}")
+    private String logMessage;
+
+    int i = 0;
+
     @GetMapping("list")
     public String list() {
+        System.out.println(i++);
         String result = restTemplate.getForObject("http://course-service/course/list", String.class);
-        return result + "，memberName：" + memberName + "，memberAge：" + memberAge;
+        return result + "，memberName：" + memberName + "，memberAge：" + memberAge +" ,dbMessage: "+ dbMessage +" ,logMessage: "+logMessage;
     }
 
 

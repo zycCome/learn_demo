@@ -7,17 +7,36 @@ spring:
     nacos:
       discovery:
         #必须配置ip地址
-        server-addr: zhuyc.top:18848
+        server-addr: 172.23.148.54:8848
         # 将自己的服务注册到注册中心
         register-enabled: true
+        username: nacos
+        #读取环境变量的值
+        password: admin996
         #namespace: all-register-service-namespace
       # 配置中心新增部分
       config:
-        server-addr: zhuyc.top:18848
+        server-addr: 172.23.148.54:8848
         file-extension: yaml
+        username: nacos
+        #读取环境变量的值
+        password: admin996
+        extension-configs[0]:
+          data-id: db.yaml
+          group: DEFAULT_GROUP
+          refresh: true
+        extension-configs[1]:
+          data-id: log.yaml
+          group: DEFAULT_GROUP
+          refresh: true
   profiles:
     active: dev
 # 新加属性，作为配置测试
 #member:
 #  name: 订单服务中的配置名称
 #  age: 18
+
+# 服务提供者名称
+course-service:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule # 负载均衡规则

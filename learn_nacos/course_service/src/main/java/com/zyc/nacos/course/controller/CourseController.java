@@ -16,6 +16,7 @@ public class CourseController {
 
     @GetMapping("list")
     public String list() {
+        System.out.println("list");
         return "查询课程列表";
     }
 }
