@@ -6,8 +6,38 @@
         </encoder>
     </appender>
 
+    <appender name="FILE1" class="ch.qos.logback.core.FileAppender">
+        <file>log_test1.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE2" class="ch.qos.logback.core.FileAppender">
+        <file>log_test2.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
     <logger name="com.zyc.mybatis.mapper" level="debug" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
 
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE1" />
+        <appender-ref ref="FILE2" />
+    </root>
+
+
+    <logger name="com.foo" level="INFO" >
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+
+    <logger name="com.foo.Bar" level="DEBUG" >
+    </logger>
 </configuration>

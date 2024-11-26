@@ -5,6 +5,7 @@ import com.zyc.entity.Shop;
 import com.zyc.mapper.ShopMapper;
 import com.zyc.result.CommonResult;
 import com.zyc.result.ResultUtils;
+import com.zyc.service.ShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class ShopController {
     @Autowired
     private ShopMapper shopMapper;
 
+    @Autowired
+    private ShopService shopService;
+
 
     @GetMapping("/list")
     public CommonResult<List<Shop>> list() {
@@ -42,6 +46,7 @@ public class ShopController {
 
     @GetMapping("/get/{id}")
     public CommonResult<Shop> get(@PathVariable Long id) {
+        shopService.business1(2222,"注意事项：1,2,3......");
         return ResultUtils.success(shopMapper.selectByPrimaryKey(1));
     }
 

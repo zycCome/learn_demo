@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author zyc66
  */
 @SpringBootApplication
-@MapperScan
+@MapperScan("com.zyc.mapper")
 public class ShopApplication {
     public static void main(String[] args) {
         SpringApplication.run(ShopApplication.class, args);
