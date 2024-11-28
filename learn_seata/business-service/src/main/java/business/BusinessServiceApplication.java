@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+
 @SpringBootApplication
 @RestController
 @EnableFeignClients
@@ -104,5 +106,24 @@ public class BusinessServiceApplication {
         return true;
     }
 
+
+    @GetMapping("buyByTcc")
+    @GlobalTransactional
+    public String buyByTcc(long userId , long productId,@RequestParam(defaultValue = "1") int used,BigDecimal money) throws Exception {
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}",RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
+       // 下面的插入是 AT 模式，后续的接口就是 TCC 模式
+        Business newRecord = new Business();
+        newRecord.setMessage(userId+","+productId+","+used);
+        newRecord.setVersion(0);
+        businessMapper.insert(newRecord);
+        orderClient.prepareCreateOrder(System.currentTimeMillis(),userId , productId,used,money);
+        storageClient.prepareChange(productId , used);
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "ok";
+    }
 
 }

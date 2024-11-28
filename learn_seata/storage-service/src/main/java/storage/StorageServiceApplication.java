@@ -1,5 +1,7 @@
 package storage;
 
+import io.seata.core.context.RootContext;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +17,7 @@ import storage.service.StorageService;
 @MapperScan("storage.mapper")
 @EnableDiscoveryClient
 @EnableFeignClients
+@Slf4j
 public class StorageServiceApplication {
 
     @Autowired
@@ -23,6 +26,13 @@ public class StorageServiceApplication {
     @GetMapping("storage/change")
     public Boolean changeStorage(long productId , int used)  {
         return storageService.updateUseNum(productId , used);
+    }
+
+    @GetMapping("storage/prepareChange")
+    public Boolean prepareChange(long productId , int used)  {
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}", RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
+
+        return storageService.prepareUpdateUseNum(null,productId , used);
     }
 
     public static void main(String[] args) {

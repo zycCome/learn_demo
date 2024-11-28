@@ -3,6 +3,7 @@ package order;
 
 import io.seata.common.util.StringUtils;
 import io.seata.core.context.RootContext;
+import lombok.extern.slf4j.Slf4j;
 import order.client.AccountClient;
 import order.model.Order;
 import order.service.OrderService;
@@ -23,6 +24,7 @@ import java.math.BigDecimal;
 @EnableDiscoveryClient
 @EnableFeignClients
 @MapperScan("order.mapper")
+@Slf4j
 public class OrderServiceApplication {
 
     @Autowired
@@ -72,6 +74,23 @@ public class OrderServiceApplication {
         accountClient.update(userId,1);
         return true;
     }
+
+    /**
+     * TCC 模式
+     * @param orderId
+     * @param userId
+     * @param productId
+     * @param count
+     * @param money
+     * @return
+     */
+    @GetMapping("order/prepareCreateOrder")
+    public Boolean create(Long orderId, Long userId, Long productId, Integer count, BigDecimal money){
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}",RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
+        orderService.prepareCreateOrder(null,orderId,userId,productId,count,money);
+        return true;
+    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(OrderServiceApplication.class, args);

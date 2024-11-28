@@ -17,6 +17,15 @@
         <mybatis-spring-boot-starter.version>2.0.0</mybatis-spring-boot-starter.version>
     </properties>
 
+    <dependencies>
+        <!-- sql 打印 -->
+        <dependency>
+            <groupId>p6spy</groupId>
+            <artifactId>p6spy</artifactId>
+            <version>3.8.5</version>
+        </dependency>
+
+    </dependencies>
 
 
 </project>

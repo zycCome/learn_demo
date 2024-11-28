@@ -16,4 +16,8 @@ public interface StorageClient {
     @GetMapping("storage/change")
     Boolean changeStorage(@RequestParam("productId") long productId ,@RequestParam("used")  int used);
 
+
+    @GetMapping("storage/prepareChange")
+    Boolean prepareChange(@RequestParam("productId") long productId ,@RequestParam("used")  int used);
+
 }
