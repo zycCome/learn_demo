@@ -1,27 +1,29 @@
-package storage.model;
+package com.zyc.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 
 /**
  * @author jianjun.ren
  * @since 2021/02/16
  */
-@TableName(value = "tab_storage")
+@TableName(value = "tab_account")
 @Data
 @Accessors(chain = true)
-public class Storage {
+public class Account {
 
     @TableId
     private Long id;
 
-    private Long total;
+    @TableField("user_id")
+    private Long userId;
 
-    private Long productId;
+    private BigDecimal money;
 
-    private Long used;
 
 }

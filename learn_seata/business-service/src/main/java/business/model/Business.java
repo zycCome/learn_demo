@@ -1,31 +1,25 @@
-package order.model;
+package business.model;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.math.BigDecimal;
-
 /**
  * @author jianjun.ren
  * @since 2021/02/16
  */
-@TableName(value = "tab_order2")
+@TableName(value = "tab_business")
 @Data
 @Accessors(chain = true)
-public class Order2 {
+public class Business {
 
     @TableId
     private Long id;
 
-    private Long userId;
+    private String message;
 
-    private Long productId;
 
-    private int count;
+    private Integer version;
 
-    private BigDecimal money;
-
-    private int status;
 }

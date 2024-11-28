@@ -1,56 +1,51 @@
 
-server:
-  port: 6760
 spring:
   profiles:
-    active: local
+    active: at
   application:
     name: business-service
   cloud:
     nacos:
       discovery:
-        server-addr: nacos.it235.com:80
+        server-addr: 172.23.148.54:8848
         register-enabled: true
-        namespace: cab17056-9954-4e45-9223-eb33692f60f7
-      config:
-        server-addr: nacos.it235.com:80
-        enabled: true
-        file-extension: yaml
-        namespace: cab17056-9954-4e45-9223-eb33692f60f7
-
+        username: nacos
+        password: admin996
+    # 配置中心新增部分
+    config:
+      server-addr: 172.23.148.54:8848
+      file-extension: yaml
+      username: nacos
+      #读取环境变量的值
+      password: admin996
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    username: root
+    password: admin996
+    url: jdbc:p6spy:mysql://172.23.148.54:3306/business?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useSSL=false
 seata:
+#  data-source-proxy-mode: XA
   enabled: true
   application-id: ${spring.application.name}
   # 事务群组（可以每个应用独立取名，也可以使用相同的名字），要与服务端nacos-config.txt中service.vgroup_mapping的后缀对应
-  tx-service-group: ${spring.application.name}-tx-group
-  config:
-    type: nacos
-    # 需要和server在同一个注册中心下
-    nacos:
-      namespace: cab17056-9954-4e45-9223-eb33692f60f7
-      serverAddr: nacos.it235.com:80
-      # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
-      group: SEATA_GROUP
-      username: "nacos"
-      password: "nacos"
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      # default_tx_group为事务组的名称，default为集群名称(与registry.conf中的一致)
+      default_tx_group: default
+      disable-global-transaction: false
   registry:
     type: nacos
     nacos:
       # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
-      application: seata-server
-      server-addr: nacos.it235.com:80
-      group: SEATA_GROUP
-      namespace: cab17056-9954-4e45-9223-eb33692f60f7
-      username: "nacos"
-      password: "nacos"
+      application: zyc-seata-server
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      group: DEFAULT_GROUP
+      username: ${spring.cloud.nacos.discovery.username}
+      password: ${spring.cloud.nacos.discovery.password}
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
-
-# feign组件超时设置
-feign:
-  client:
-    config:
-      default:
-        connect-timeout: 30000
-        read-timeout: 30000
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,0 +1,10 @@
+CREATE TABLE `tab_account` (
+                               `id` bigint NOT NULL,
+                               `user_id` bigint DEFAULT NULL,
+                               `money` decimal(10,0) DEFAULT NULL,
+                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+INSERT INTO `account`.`tab_account`(`id`, `user_id`, `money`) VALUES (1, 1, 10000);
+INSERT INTO `account`.`tab_account`(`id`, `user_id`, `money`) VALUES (2, 2, 20000);

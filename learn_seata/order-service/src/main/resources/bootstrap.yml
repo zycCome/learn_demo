@@ -1,61 +1,48 @@
 server:
-  port: 6770
+  port: 13000
 spring:
   profiles:
-    active: local
+    active: at
   application:
     name: order-service
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: seata_test
-    password: 'seata1234abcd!'
-    url: jdbc:mysql://test:13306/order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true
   cloud:
     nacos:
       discovery:
-        server-addr: test:8848
+        server-addr: 172.23.148.54:8848
         register-enabled: true
-        namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
-      config:
-        server-addr: test:8848
-        enabled: true
-        file-extension: yaml
-        namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
-
+        username: nacos
+        password: admin996
+    # 配置中心新增部分
+    config:
+      server-addr: 172.23.148.54:8848
+      file-extension: yaml
+      username: nacos
+      #读取环境变量的值
+      password: admin996
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: admin996
+    url: jdbc:mysql://172.23.148.54:3306/order?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useSSL=false
 seata:
   enabled: true
   application-id: ${spring.application.name}
   # 事务群组（可以每个应用独立取名，也可以使用相同的名字），要与服务端nacos-config.txt中service.vgroup_mapping的后缀对应
-  tx-service-group: ${spring.application.name}-tx-group
-  config:
-    type: nacos
-    # 需要和server在同一个注册中心下
-    nacos:
-      namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
-      serverAddr: test:8848
-      # 需要server端(registry和config)、nacos配置client端(registry和config)保持一致
-      group: SEATA_GROUP
-      username: "nacos"
-      password: "nacos"
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      # default_tx_group为事务组的名称，default为集群名称(与registry.conf中的一致)
+      default_tx_group: default
+      disable-global-transaction: false
   registry:
     type: nacos
     nacos:
       # 需要和server端保持一致，即server在nacos中的名称，默认为seata-server
-      application: seata-server
-      server-addr: test:8848
-      group: SEATA_GROUP
-      namespace: 3c250526-65c6-4417-b3d9-84e67e304fcb
-      username: "nacos"
-      password: "nacos"
-  enable-auto-data-source-proxy: false
-
+      application: zyc-seata-server
+      server-addr: ${spring.cloud.nacos.discovery.server-addr}
+      group: DEFAULT_GROUP
+      username: ${spring.cloud.nacos.discovery.username}
+      password: ${spring.cloud.nacos.discovery.password}
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
-logging:
-  level:
-    order.mapper: debug
-mybatis-plus:
-  global-config:
-    db-config:
-      id-type: INPUT

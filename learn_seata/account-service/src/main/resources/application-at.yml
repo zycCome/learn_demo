@@ -1,0 +1,4 @@
+seata:
+  data-source-proxy-mode: AT
+server:
+  port: 24001

@@ -1,6 +1,7 @@
 package storage.service.impl;
 
 
+import io.seata.core.context.RootContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ public class StorageServiceImpl implements StorageService {
     @Override
     @Transactional
     public boolean updateUseNum(long productId, long used) {
-//        int a = 100/0;
-        if (used > 100) {
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}", RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
+        if (used > 10) {
             throw new RuntimeException("used to much : " + used);
         }
-        long t1 = System.currentTimeMillis();
-        Storage byIdInLock = storageMapper.getByIdInLock(productId);
-        log.error("select time:" + (System.currentTimeMillis() - t1));
+//        long t1 = System.currentTimeMillis();
+//        Storage byIdInLock = storageMapper.getByIdInLock(productId);
+//        log.error("select time:" + (System.currentTimeMillis() - t1));
         int index = storageMapper.updateUsed(productId, used);
         return index > 0;
     }

@@ -1,10 +1,10 @@
 server:
-  port: 12000
+  port: 14000
 spring:
+  application:
+    name: account-service
   profiles:
     active: at
-  application:
-    name: storage-service
   cloud:
     nacos:
       discovery:
@@ -23,7 +23,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: admin996
-    url: jdbc:mysql://172.23.148.54:3306/storage?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useSSL=false
+    url: jdbc:mysql://172.23.148.54:3306/account?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useSSL=false
 seata:
   enabled: true
   application-id: ${spring.application.name}

@@ -1,9 +1,10 @@
 package order;
 
 
-import order.mapper.OrderMapper2;
+import io.seata.common.util.StringUtils;
+import io.seata.core.context.RootContext;
+import order.client.AccountClient;
 import order.model.Order;
-import order.model.Order2;
 import order.service.OrderService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.BeanUtils;
@@ -27,8 +28,10 @@ public class OrderServiceApplication {
     @Autowired
     private OrderService orderService;
 
+
     @Autowired
-    private OrderMapper2 orderMapper2;
+    private AccountClient accountClient;
+
 
     @GetMapping("order/create")
     public Boolean create(long userId , long productId){
@@ -38,14 +41,36 @@ public class OrderServiceApplication {
             .setProductId(productId)
             .setUserId(userId)
             .setStatus(0);
+        if(userId == 0) {
 
-//        //测试传xid，是否依赖本地事务注解（ @Transactional）
-//        Order2 order2 = new Order2();
-//        BeanUtils.copyProperties(order,order2);
-//        order2.setUserId(order2.getUserId() + 20000);
-//        orderMapper2.insert(order2);
-
-        return orderService.create(order);
+        }
+        orderService.create(order);
+        if(userId == 0) {
+            // 测试本地事务
+            orderService.create2RecordInLocalTransactional(order);
+        } else if(userId == -1) {
+            orderService.create2RecordNotInLocalTransactional(order);
+        } else if(userId == -2) {
+            // 测试挂起全局事务，然后开启本地事务
+            String xid = RootContext.getXID();
+            try {
+                RootContext.unbind();
+                Order newOrder = new Order();
+                BeanUtils.copyProperties(order,newOrder);
+                orderService.create2RecordInLocalTransactional(newOrder);
+            } finally {
+                if(StringUtils.isNotEmpty(xid)) {
+                    RootContext.bind(xid);
+                }
+            }
+        } else if (userId == -3) {
+            // 测试挂起全局事务(通过全局事务注解的方式)，然后开启本地事务
+            Order newOrder = new Order();
+            BeanUtils.copyProperties(order,newOrder);
+            orderService.create2RecordInLocalTransactionalAndNoGlobalTransaction(newOrder);
+        }
+        accountClient.update(userId,1);
+        return true;
     }
 
     public static void main(String[] args) {

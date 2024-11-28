@@ -1,13 +1,13 @@
 package order.service.impl;
 
 
+import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalTransactional;
+import io.seata.tm.api.transaction.Propagation;
 import lombok.extern.slf4j.Slf4j;
 import order.mapper.OrderMapper;
-import order.mapper.OrderMapper2;
 import order.model.Order;
-import order.model.Order2;
 import order.service.OrderService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,26 +22,58 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderMapper orderMapper;
-    @Autowired
-    private OrderMapper2 orderMapper2;
+
+    @Override
+
+    public boolean create(Order order) {
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}", RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
+        log.info("创建订单开始");
+        int index = orderMapper.insert(order);
+        log.info("创建订单结束");
+        return index > 0;
+    }
+
 
     @Override
     @Transactional
-    public boolean create(Order order) {
+    public boolean create2RecordInLocalTransactional(Order order) {
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}", RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
         log.info("创建订单开始");
-
-//        //1.测试本地事务是否生效. 结论：1.不传递xid时，本地事务生效  2.传递xid时，该方法也在事务提交
-//        //2.测试全局事务是否生效，以及代理连接什么时候生效，什么时候提交？
-//        Order2 order2 = new Order2();
-//        BeanUtils.copyProperties(order,order2);
-//        orderMapper2.insert(order2);
-//        if(order.getUserId().equals(1000L)) {
-//            //分别测试传和不传xid的场景。不传xid：本地事务回滚； 传xid：本地事务也回滚
-//            throw new RuntimeException("userId equals 1000");
-//        }
-
-//        int index = orderMapper.insert(order);
+        order.setId(null);
         int index = orderMapper.insert(order);
+        order.setId(null);
+        int index2 = orderMapper.insert(order);
+
+        log.info("创建订单结束");
+        return index > 0;
+    }
+
+
+    @Override
+    public boolean create2RecordNotInLocalTransactional(Order order) {
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}", RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
+        log.info("创建订单开始");
+        order.setId(null);
+        int index = orderMapper.insert(order);
+        order.setId(null);
+        int index2 = orderMapper.insert(order);
+
+        log.info("创建订单结束");
+        return index > 0;
+    }
+
+
+    @Override
+    @GlobalTransactional(propagation = Propagation.NOT_SUPPORTED)
+    @Transactional
+    public boolean create2RecordInLocalTransactionalAndNoGlobalTransaction(Order order) {
+        log.info("inGlobalTransaction:{},xid:{},branchType:{}", RootContext.inGlobalTransaction(),RootContext.getXID(),RootContext.getBranchType());
+        log.info("创建订单开始");
+        order.setId(null);
+        int index = orderMapper.insert(order);
+        order.setId(null);
+        int index2 = orderMapper.insert(order);
+
         log.info("创建订单结束");
         return index > 0;
     }
