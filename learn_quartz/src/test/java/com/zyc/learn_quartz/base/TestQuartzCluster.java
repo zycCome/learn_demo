@@ -18,6 +18,8 @@ public class TestQuartzCluster {
 
     public static boolean flag = false;
 
+    private static Scheduler scheduler;
+
     public static void main(String[] args) throws Exception {
         try {
             flag = true;
@@ -30,7 +32,7 @@ public class TestQuartzCluster {
     }
 
     private static void resumeJobFromDatabase() throws Exception {
-        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+//        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         System.out.println("当前调度器的id是："+scheduler.getSchedulerInstanceId());
         scheduler.start();
         // 等待200秒，让前面的任务都执行完了之后，再关闭调度器
@@ -40,7 +42,7 @@ public class TestQuartzCluster {
 
     private static void assginNewJob() throws SchedulerException, InterruptedException {
         // 创建调度器
-        Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
+        scheduler = new StdSchedulerFactory("quartz-cluster.properties").getScheduler();
         // 定义一个触发器
 //        Trigger trigger = newTrigger().withIdentity("trigger1", "group1") // 定义名称和所属的租
 //                .startNow()
