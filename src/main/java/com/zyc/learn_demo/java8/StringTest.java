@@ -1,5 +1,7 @@
 package com.zyc.learn_demo.java8;
 
+import org.junit.Test;
+
 import java.lang.reflect.Field;
 
 /**
@@ -43,5 +45,14 @@ public class StringTest {
         System.out.println(str1 == str4); // true
     }
 
+    @Test
+    public void string_inter_case() {
+        String str1 = new String("hello");
+        String str2 = new String("hello");
+        System.out.println(str1 == str2);
+        System.out.println(str1 == str1.intern());
+        System.out.println(str2 == str2.intern());
+        System.out.println(str1.intern() == str2.intern());
+    }
 
 }

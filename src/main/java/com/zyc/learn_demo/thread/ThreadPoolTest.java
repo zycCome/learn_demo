@@ -274,5 +274,24 @@ public class ThreadPoolTest {
     }
 
 
+    @Test
+    public void execute_throw_exception() throws InterruptedException, ExecutionException {
+        ThreadPoolExecutor executorService = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS,
+                new SynchronousQueue<>(), new ThreadFactoryBuilder().setNamePrefix("pushServer-thread-").build(), new ThreadPoolExecutor.AbortPolicy());
+
+        Future<?> future = executorService.submit(() -> {
+            int a = 1 / 0;
+        });
+        Thread.sleep(1000);
+        System.out.println(future.isDone());
+
+        future.get();
+
+        Thread.sleep(100000);
+    }
+
+    public void test1 () {
+
+    }
 
 }

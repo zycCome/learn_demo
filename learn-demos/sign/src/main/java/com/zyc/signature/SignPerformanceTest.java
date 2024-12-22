@@ -70,7 +70,7 @@ public class SignPerformanceTest {
         FileReader fileReader = new FileReader(file);
         List<String> list = fileReader.readLines();
         //预热的行数
-        int preheatRow = 1000;
+        int preheatRow = 0;
         String secret = "7KpBtCxFAymJxpwt";
         signByMd5(list, preheatRow, secret);
         signBySHA1(list, preheatRow, secret);
@@ -158,7 +158,7 @@ public class SignPerformanceTest {
                 byte[] decrypt2 = rsa.decrypt(encrypt2, KeyType.PublicKey);
             });
         }
-        System.out.println("signBySHA256--rows=" + list.size() + ",elapse=" + (System.currentTimeMillis() - start));
+        System.out.println("signByRSA--rows=" + list.size() + ",elapse=" + (System.currentTimeMillis() - start));
     }
 
 

@@ -1,6 +1,7 @@
 package com.zyc.controller;
 
 import com.zyc.config.ConfigProperties;
+import com.zyc.response.TestPojo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,18 @@ public class DataController {
     @GetMapping(value = "/version")
     public String versionAll() {
         return "versionAll";
+    }
+
+
+    @RequestMapping("/test")
+    public TestPojo testDesensitization(){
+        TestPojo testPojo = new TestPojo();
+        testPojo.setUserName("我是用户名");
+        testPojo.setAddress("地球中国-北京市通州区京东总部2号楼");
+        testPojo.setPhone("13782946666");
+        testPojo.setPassword("sunyangwei123123123.");
+        System.out.println(testPojo);
+        return testPojo;
     }
 
 

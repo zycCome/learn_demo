@@ -17,7 +17,7 @@ public class Kmp3Test {
     }
 
     public int find(String main,String pattern) {
-        int[] prefix = buildPrefix(pattern);
+        int[] prefix =  buildPrefix(pattern);
         movePrefix(prefix);
         // i是主串下标，j是模式串下标。i不会回退
         int i=0;
