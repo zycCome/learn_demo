@@ -3,6 +3,7 @@ package com.zyc.beancopy.mapper;
 import com.zyc.beancopy.entity.UserEntity;
 import com.zyc.beancopy.po.UserPo;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 
@@ -14,8 +15,11 @@ import org.mapstruct.factory.Mappers;
  *
  * 注意@Mapper是Mapstruct的注解，不要引错了。
  */
-@Mapper
+@Mapper(uses = NestedObjectMapper.class)
 public interface IPersonMapper {
     IPersonMapper INSTANCT = Mappers.getMapper(IPersonMapper.class);
+
+    @Mapping(source = "address",target = "address")
+    @Mapping(source = "integerList",target = "integerList2")
     UserEntity po2entity(UserPo userPo);
 }

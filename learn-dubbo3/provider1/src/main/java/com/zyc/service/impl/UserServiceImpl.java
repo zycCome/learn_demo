@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.common.stream.StreamObserver;
 import org.apache.dubbo.config.annotation.DubboService;
+import org.apache.dubbo.config.annotation.Method;
 import org.apache.dubbo.samples.api.UserService;
 import org.apache.dubbo.samples.po.User;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,12 @@ import org.springframework.stereotype.Service;
  * @author zyc66
  * @date 2024/11/18 13:24
  **/
-@DubboService(weight = 100)
+@DubboService(weight = 100,
+        methods = {
+                @Method(name = "getByUserId", timeout = 1200),
+                @Method(name = "getByTag", timeout = 1300),
+        }
+)
 @Slf4j
 public class UserServiceImpl implements UserService {
 
@@ -24,7 +30,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getByUserId(Integer userId) {
        log.info("{} getByUserId :{}", tag,userId);
-
         return new User(userId, RandomUtil.randomString(10));
     }
 

@@ -22,6 +22,11 @@ public class HelloController {
 
     @GetMapping("/hello")
     public Mono<String> hello() {   // 【改】返回类型为Mono<String>
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return Mono.just("Welcome to reactive world ~");     // 【改】使用Mono.just生成响应式数据
     }
 
@@ -33,6 +38,11 @@ public class HelloController {
 
     @PostMapping("/data")
     public String data(@RequestBody Person person) {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(JSONUtil.toJsonStr(person));
         return "data";
     }

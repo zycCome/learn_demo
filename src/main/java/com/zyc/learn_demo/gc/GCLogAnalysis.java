@@ -1,4 +1,4 @@
-package com.zyc.learn_demo;
+package com.zyc.learn_demo.gc;
 
 import cn.hutool.core.util.RandomUtil;
 

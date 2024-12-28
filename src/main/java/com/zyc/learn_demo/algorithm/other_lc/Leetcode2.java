@@ -490,4 +490,10 @@ public class Leetcode2 {
         }
         return dp[n];
     }
+
+
+    public void t() {
+        List<Integer> l = new ArrayList<>();
+        l.stream().mapToInt(Integer::intValue).toArray();
+    }
 }

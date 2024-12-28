@@ -1,5 +1,7 @@
 package com.zyc.learn_demo.concurrent;
 
+import org.junit.Test;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -34,6 +36,18 @@ public class LinkedHashMapTest {
         for (Map.Entry<String, String> stringStringEntry : lruCache.entrySet()) {
             System.out.println(stringStringEntry.getKey()+":"+stringStringEntry.getValue());
         }
+    }
+
+    @Test
+    public void testHeadAndAfter() {
+        LinkedHashMap<String, String> linkedHashMap =
+                new LinkedHashMap<String, String>(12,0.75F,true);
+        linkedHashMap.put("A","A");
+        linkedHashMap.get("A");
+        linkedHashMap.put("B","B");
+        linkedHashMap.get("A");
+        linkedHashMap.get("A");
+        System.out.println("end");
     }
 
 //    接口中的变量都是常量

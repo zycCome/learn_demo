@@ -2,8 +2,8 @@
 dubbo:
   application:
     name: dubbo-provider
-    register-mode: instance
-#    register-mode: all
+#    register-mode: instance
+    register-mode: all
     service-discovery:
       migration: APPLICATION_FIRST
   registry:

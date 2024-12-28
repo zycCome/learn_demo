@@ -24,6 +24,11 @@ public class DataController {
 
     @GetMapping("/config1")
     public String config1() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(configProperties1);
         log.info("this: {}, i:{}",this,i++);
         return "ok5";

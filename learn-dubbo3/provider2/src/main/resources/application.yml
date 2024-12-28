@@ -3,7 +3,7 @@ dubbo:
   application:
     qos-enable: false
     name: dubbo-provider
-    register-mode: instance
+    register-mode: all
     service-discovery:
       migration: APPLICATION_FIRST
   registry:

@@ -25,7 +25,8 @@ public class JsonSearch {
         // 先遍历一遍所有的key-value
         JSONObject root = JSONUtil.parseObj(json);
         recursionGenerateNode(root, null);
-        System.out.println(map.computeIfAbsent("金字塔", k -> "不存在的关键字：" + k));
+        System.out.println(map.computeIfAbsent("金字塔", k -> "存在的关键字：" + k));
+        System.out.println(map.computeIfAbsent("金字塔", k -> "存在的关键字：" + k));
         System.out.println(map.computeIfAbsent("美洲", k -> "不存在的关键字：" + k));
     }
 

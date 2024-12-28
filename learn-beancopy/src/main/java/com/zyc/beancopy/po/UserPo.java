@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -19,4 +20,10 @@ public class UserPo {
     private Long age;
     private String userNick;
     private String userVerified;
+
+    private Address address;
+
+    private List<Integer> integerList;
+
+    private NestedObject nestedObject;
 }
