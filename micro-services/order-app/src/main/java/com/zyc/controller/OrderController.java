@@ -42,4 +42,16 @@ public class OrderController {
         return ResultUtils.success(new Order(1L,"数码"));
     }
 
+    @GetMapping("/sleep/{duration}")
+    public CommonResult<String> sleep(@PathVariable("duration") Long duration) {
+        log.info("sleep:{}",duration);
+        try {
+            Thread.sleep(duration);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return ResultUtils.success("sleep "+duration+" end");
+    }
+
+
 }

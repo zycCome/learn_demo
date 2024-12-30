@@ -11,5 +11,9 @@ spring:
         password: admin996
         namespace: 187f9490-a14d-4327-9da4-de3e02168833
         group: a
+  lifecycle:
+    timeout-per-shutdown-phase: 40s
 server:
   port: 8000
+  shutdown: graceful
+
