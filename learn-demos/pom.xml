@@ -19,6 +19,7 @@
         <module>agent-app</module>
         <module>gRPC-demo</module>
         <module>xxljob-demo</module>
+        <module>es-job-lite</module>
         <!--        <module>i18n</module>-->
     </modules>
 

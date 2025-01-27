@@ -97,6 +97,7 @@ public class ThreadPoolTest {
      */
     @Test
     public void testMaxOrQueue() throws InterruptedException {
+        // 使用 SynchronousQueue 时，如果当没有空闲的消费线程在take时，offer方法会直接返回失败并创建新的非核心线程
         ThreadPoolExecutor eventThreadPool = new ThreadPoolExecutor(1, 10, 30, TimeUnit.SECONDS,
                 new SynchronousQueue<>(), new ThreadFactoryBuilder().setNamePrefix("workWx-event-thread-").build(), new CustomRejectedExecutionHandler());
         for (int i = 0; i < 12; i++) {

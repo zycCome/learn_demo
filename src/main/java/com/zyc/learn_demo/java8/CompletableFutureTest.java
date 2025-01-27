@@ -3,6 +3,7 @@ package com.zyc.learn_demo.java8;
 import org.junit.Test;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Description 测试异步
@@ -129,6 +130,54 @@ public class CompletableFutureTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 测试 自定义CompletableFuture 设置异常
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    @Test
+    public void testCompleteExceptionally() throws ExecutionException, InterruptedException {
+        CompletableFuture<String> completableFuture = new CompletableFuture<>();
+// ...
+        completableFuture.completeExceptionally(
+                new RuntimeException("Calculation failed!"));
+// ...
+        completableFuture.get(); // java.util.concurrent.ExecutionException: java.lang.RuntimeException: Calculation failed!
+        System.out.println("end");
+    }
+
+
+    /**
+     * 测试testWhenComplete由哪个线程执行？
+     * 1. 注册whenComplete时，future还未完成，由调用complete的方法执行
+     * 2. 注册whenComplete时，future已经完成，由注册whenComplete的线程执行
+     */
+    @Test
+    public void  testWhenComplete() throws InterruptedException {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        long start = System.currentTimeMillis();
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            future.complete(true);
+        }).start();
+        Thread.sleep(6000);
+        future.whenComplete((r,e) -> {
+            if (r) {
+                System.out.println(r);
+            }
+            if (e != null) {
+
+            }
+        });
+        System.out.println(System.currentTimeMillis() - start);
+        Thread.sleep(10000);
     }
 
 }
