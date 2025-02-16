@@ -1,8 +1,6 @@
 package com.zyc.learn_demo.algorithm.other_lc;
 
 import cn.hutool.core.util.StrUtil;
-import com.sun.org.apache.regexp.internal.RE;
-import org.assertj.core.util.Lists;
 import org.junit.Test;
 
 import java.util.*;
