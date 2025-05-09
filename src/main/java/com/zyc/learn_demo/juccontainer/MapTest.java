@@ -2,10 +2,7 @@ package com.zyc.learn_demo.juccontainer;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author zhuyc
@@ -49,6 +46,32 @@ public class MapTest {
 
 
         String s = a.get(0);
+    }
+
+
+    @Test
+    public void removeIfTest() {
+        // 初始化一个 HashMap， 有10个随机字符串
+        HashMap<Integer,Integer> map = new HashMap();
+        for (int i = 0; i < 10; i++) {
+            map.put(i,i*10);
+        }
+
+        System.out.println(map);
+
+        // 这种方式会报错
+//        for (String s : map) {
+//            if(Integer.parseInt(s) % 2== 0) {
+//                map.remove(s);
+//            }
+//        }
+        map.keySet().removeIf(s -> {
+            if(s % 2== 0) {
+                return true;
+            }
+            return false;
+        });
+        System.out.println(map);
     }
 
 }

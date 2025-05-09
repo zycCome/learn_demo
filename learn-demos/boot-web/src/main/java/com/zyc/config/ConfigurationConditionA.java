@@ -8,7 +8,10 @@ public class ConfigurationConditionA implements ConfigurationCondition {
 
     @Override
     public ConfigurationPhase getConfigurationPhase() {
-        return ConfigurationPhase.REGISTER_BEAN;
+        /**
+         * 和 REGISTER_BEAN 的区别：REGISTER_BEAN 还是会解析配置类ConfigB，只是不会创建；PARSE_CONFIGURATION 直接不会把 ConfigB作为配置类，当然也就不会解析ConfigB了
+         */
+        return ConfigurationPhase.PARSE_CONFIGURATION;
     }
 
 //    @Override

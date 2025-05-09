@@ -5,7 +5,6 @@ import com.zyc.transaction.ITxA;
 import com.zyc.transaction.MyConfigOfTX;
 import com.zyc.transaction.TxB;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -186,6 +185,8 @@ public class AopTest {
 
     /**
      * 1. TransactionSynchronizationManager.registerSynchronization 是注册到当前事务中的，事务结束会清空Synchronization集合
+     * 2. 如果两个事务方法用的是同一个事务（比如都用了REQUIRED），那么这两个方法注册的TransactionSynchronizationAdapter 会在事务真正提交后才调用
+     * 3. 如果两个事务方法用的不是同一个事务（比如第二方法用了REQUIRED_NEW），那么这两个方法注册的TransactionSynchronizationAdapter会分别在两个事务中，也分别在两次事务提交后被调用
      */
     @Test
     public void  testTransactionSynchronization() {
@@ -196,7 +197,7 @@ public class AopTest {
 
         userService.insertWithTransactionSynchronization();
         // 多次注册不会重复
-//        userService.insertWithTransactionSynchronization();
+        userService.insertWithTransactionSynchronization();
 
 
         applicationContext.close();
