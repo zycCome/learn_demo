@@ -20,6 +20,7 @@
         <module>gRPC-demo</module>
         <module>xxljob-demo</module>
         <module>es-job-lite</module>
+        <module>active-mq-demo</module>
         <!--        <module>i18n</module>-->
     </modules>
 
